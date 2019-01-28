@@ -728,11 +728,13 @@
       
         
           
-            <h2 id="借用下啊哈算法的图例和解释："><a href="#借用下啊哈算法的图例和解释：" class="headerlink" title="借用下啊哈算法的图例和解释："></a>借用下啊哈算法的图例和解释：</h2><blockquote>
+            <h3 id="借用下啊哈算法的图例和解释："><a href="#借用下啊哈算法的图例和解释：" class="headerlink" title="借用下啊哈算法的图例和解释："></a>借用下啊哈算法的图例和解释：</h3><blockquote>
 <p>后进先出的数据结构——栈。</p>
 </blockquote>
 <p>栈限定只能在一端进行插入和删除操作。比如说有一个小桶，小桶的直径只能放一个小球，我们现在向小桶内依次放入2号、1号、3号小球。假如你现在需要拿出2号小球，那就必须先将3号小球拿出，再拿出1号小球，最后才能将2号小球拿出来。在刚才取小球的过程中，我们最先放进去的小球最后才能拿出来，而最后放进去的小球却可以最先拿出来。这就是后进先出，也可以称为先进后出。<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fzmeqrpdxpj30dw0c8gmj.jpg" alt=""></p>
-<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><p>递归的基本思想就是把规模大的问题转化为规模小的相似的子问题来解决。特别地，在函数实现时，因为解决大问题的方法和解决小问题的方法往往是同一个方法，所以就产生了函数调用它自身的情况，这也正是递归的定义所在。格外重要的是，这个解决问题的函数必须有明确的结束条件，否则就会导致无限递归的情况。</p>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><blockquote>
+<p>递归的基本思想就是把规模大的问题转化为规模小的相似的子问题来解决。特别地，在函数实现时，因为解决大问题的方法和解决小问题的方法往往是同一个方法，所以就产生了函数调用它自身的情况，这也正是递归的定义所在。格外重要的是，这个解决问题的函数必须有明确的结束条件，否则就会导致无限递归的情况。</p>
+</blockquote>
 <p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzmer6aif0j30hu0lttab.jpg" alt=""></p>
 <h3 id="用python实现阶乘解释下递归"><a href="#用python实现阶乘解释下递归" class="headerlink" title="用python实现阶乘解释下递归"></a>用python实现阶乘解释下递归</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(x):</span><br><span class="line">    if x == 1:</span><br><span class="line">        return 1</span><br><span class="line">    else:</span><br><span class="line">        return x * fact(x-1)</span><br></pre></td></tr></table></figure>
 <p>此时计算fact(3)的值</p>
