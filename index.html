@@ -252,6 +252,570 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/27/随机森林算法梳理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thinks">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thinks's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/27/随机森林算法梳理/" itemprop="url">随机森林算法梳理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-27T22:24:51+08:00">
+                2019-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习-算法/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习 算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-集成学习概念"><a href="#1-集成学习概念" class="headerlink" title="1. 集成学习概念"></a>1. 集成学习概念</h2><p>集成学习就是将几种机器学习模型组合成一个模型的元算法(meta-algorithm)，以减小方差(例如：Bagging)，偏差(例如：Boosting)，或者改进预测(例如：Stacking、Blending)。</p>
+<p>其结构如下图所示：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g0ld53t5fnj30kp0h875d.jpg" alt=""></p>
+<p>也就是说，我们需要解决两个问题：</p>
+<ul>
+<li><p>如何得到若干个个体学习器</p>
+</li>
+<li><p>应采用什么样的结合策略</p>
+</li>
+</ul>
+<h2 id="2-个体学习器概念"><a href="#2-个体学习器概念" class="headerlink" title="2. 个体学习器概念"></a>2. 个体学习器概念</h2><p>之前讲到，集成学习的一个问题就是如何得到若干个个体学习器，那么我们两种选择。</p>
+<ul>
+<li><p>同类型（如全是决策树，或者全是神经网络）的个体学习器</p>
+</li>
+<li><p>不同类型的个体学习器。比如我们有一个分类问题，对训练集采用支持向量机个体学习器、逻辑回归个体学习器和朴素贝叶斯个体学习器来学习，再通过某种结合策略来确定最终的分类强学习器。</p>
+</li>
+</ul>
+<p>一般而言，个体学习器是所谓的弱学习器，即泛化能力略优于随机猜测的学习器。使用弱学习器进行集成学习已经可以获得足够好的泛化性能。当然也可以使用比较强的学习器。</p>
+<p>理想的个体学习器应该具有<strong>好而不同</strong>的特点，即：</p>
+<p>好：有一定的准确性</p>
+<p>不同：个体学习器之间应该具有差异</p>
+<p>目前来说，同质个体学习器的应用是最广泛的，一般我们常说的集成学习的方法都是指的同质个体学习器。而同质个体学习器使用最多的模型是CART决策树和神经网络。</p>
+<p>同质个体学习器按照个体学习器之间是否存在依赖关系可以分为两类：</p>
+<ul>
+<li>个体学习器之间存在强依赖关系，一系列个体学习器基本都需要串行生成，代表算法是boosting系列算法，</li>
+<li>个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，代表算法是bagging和随机森林（Random Forest）系列算法。</li>
+</ul>
+<h2 id="3-boosting-bagging"><a href="#3-boosting-bagging" class="headerlink" title="3. boosting  bagging"></a>3. boosting  bagging</h2><p>也就是自举汇聚法(Bootstrap Aggregating)，步骤如下： 在包含N个样本的数据集中采用有放回的抽样方式随机抽取一定数量(可以为N)的样本，构成一个数据集；  按照步骤1中的方式得到M个数据集；  利用机器学习的方法(例如：SVM，决策树，神经网络……)对得到的M个数据集，训练出M个弱模型(比随机模型效果好)；  集成M个弱模型的结果作为最终结果；Bagging就是通过M个弱模型的结果，通过并行集成的方式来获得最终结果。因为M个数据集是相互独立的，因此这M个弱模型之间也是相互独立的，在最终的集成结果时，每个模型的权重是一样的。这是和下文的Boosting所不同的。Bagging集成方式 回归问题：M个模型结果的均值； 分类问题： 对M个模型的结果进行投票决定，票数多的作为结果；票数一样，随机决定；代表方法</p>
+<h2 id="4-结合策略-平均法，投票法，学习法"><a href="#4-结合策略-平均法，投票法，学习法" class="headerlink" title="4. 结合策略(平均法，投票法，学习法)"></a>4. 结合策略(平均法，投票法，学习法)</h2><h2 id="5-随机森林思想"><a href="#5-随机森林思想" class="headerlink" title="5. 随机森林思想"></a>5. 随机森林思想</h2><p>1.构建多个数据集</p>
+<p>在包括N个样本的数据集中，采用有放回的抽样方式选择N个样本，构成中间数据集，然后在这个中间数据集的所有特征中随机选择几个特征，作为最终的数据集。以上述方式构建多个数据集；一般回归问题选用全部特征，分类问题选择全部特征个数的平方根个特征</p>
+<p>2.为每个数据集建立完全分裂的决策树</p>
+<p>利用CART为每个数据集建立一个完全分裂、没有经过剪枝的决策树，最终得到多棵CART决策树；</p>
+<p>3.预测新数据</p>
+<p>根据得到的每一个决策树的结果来计算新数据的预测值。回归问题：采用多棵树的平均值。分类问题：采用投票计数的方法，票数大的获胜，相同的随机选择。可以把树的棵树设置为奇数避免这一问题。</p>
+<h2 id="6-随机森林的推广"><a href="#6-随机森林的推广" class="headerlink" title="6. 随机森林的推广"></a>6. 随机森林的推广</h2><h2 id="7-优缺点"><a href="#7-优缺点" class="headerlink" title="7. 优缺点"></a>7. 优缺点</h2><h2 id="8-sklearn参数2"><a href="#8-sklearn参数2" class="headerlink" title="8. sklearn参数2"></a>8. sklearn参数2</h2><h2 id="9-应用场景"><a href="#9-应用场景" class="headerlink" title="9.应用场景"></a>9.应用场景</h2><p>参考资料：</p>
+<p><a href="https://blog.csdn.net/qq_36330643/article/details/77621232" target="_blank" rel="noopener">https://blog.csdn.net/qq_36330643/article/details/77621232</a><br><a href="http://chrer.com/2018/07/24/集成学习常见模型/" target="_blank" rel="noopener">http://chrer.com/2018/07/24/集成学习常见模型/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+    
+    <div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/26/贝叶斯/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thinks">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thinks's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/26/贝叶斯/" itemprop="url">贝叶斯</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-26T21:03:59+08:00">
+                2019-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  0
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+    
+    <div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/26/k-means/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thinks">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thinks's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/26/k-means/" itemprop="url">k-means</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-26T09:42:23+08:00">
+                2019-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据挖掘-算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据挖掘 算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  256
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="一、相异度计算"><a href="#一、相异度计算" class="headerlink" title="一、相异度计算"></a>一、相异度计算</h2><blockquote>
+<p>相异度即两个东西差别有多大。</p>
+</blockquote>
+<p>人的直观感受下，人与羊的相异度明显大于人与猩猩的相异度。但是如何把这种感受传递给计算机，我们必须对使用数学语言描述出相异度。</p>
+<h3 id="1-标量下的相异度计算"><a href="#1-标量下的相异度计算" class="headerlink" title="1.标量下的相异度计算"></a>1.标量下的相异度计算</h3><blockquote>
+<p>标量即无方向意义的数字。</p>
+</blockquote>
+<p>设x=(1,2,3),y=(4,5,6)</p>
+<ul>
+<li><p>欧式距离</p>
+</li>
+<li><p>曼哈顿距离</p>
+</li>
+<li><p>闵可夫斯基距离</p>
+</li>
+<li><p>皮尔逊系数(Pearson Correlation Coefficient)</p>
+</li>
+</ul>
+<p>归一化问题</p>
+<p>以上计算存在一个问题：取值范围大的属性对距离的影响高于取值范围小的属性。为了解决这个问题，一般要进行归一化。</p>
+<p>归一化就是将各个属性值按比例映射到相同的取值区间，这样是为了平衡各个属性对距离的影响。通常将各个属性均映射到[0,1]区间，映射公式为：</p>
+<p><a href="https://www.kancloud.cn/wizardforcel/dm-algo-top10/116021" target="_blank" rel="noopener">https://www.kancloud.cn/wizardforcel/dm-algo-top10/116021</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+    
+    <div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/25/html-css-语法基础/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1373,584 +1937,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/递归和栈/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/28/递归和栈/" itemprop="url">递归和栈</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-28T14:16:04+08:00">
-                2019-01-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  377
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="借用下啊哈算法的图例和解释："><a href="#借用下啊哈算法的图例和解释：" class="headerlink" title="借用下啊哈算法的图例和解释："></a>借用下啊哈算法的图例和解释：</h3><blockquote>
-<p>后进先出的数据结构——栈。</p>
-</blockquote>
-<p>栈限定只能在一端进行插入和删除操作。比如说有一个小桶，小桶的直径只能放一个小球，我们现在向小桶内依次放入2号、1号、3号小球。假如你现在需要拿出2号小球，那就必须先将3号小球拿出，再拿出1号小球，最后才能将2号小球拿出来。在刚才取小球的过程中，我们最先放进去的小球最后才能拿出来，而最后放进去的小球却可以最先拿出来。这就是后进先出，也可以称为先进后出。<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fzmeqrpdxpj30dw0c8gmj.jpg" alt=""></p>
-<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><blockquote>
-<p>递归的基本思想就是把规模大的问题转化为规模小的相似的子问题来解决。特别地，在函数实现时，因为解决大问题的方法和解决小问题的方法往往是同一个方法，所以就产生了函数调用它自身的情况，这也正是递归的定义所在。格外重要的是，这个解决问题的函数必须有明确的结束条件，否则就会导致无限递归的情况。</p>
-</blockquote>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzmer6aif0j30hu0lttab.jpg" alt=""></p>
-<h3 id="用python实现阶乘解释下递归"><a href="#用python实现阶乘解释下递归" class="headerlink" title="用python实现阶乘解释下递归"></a>用python实现阶乘解释下递归</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(x):</span><br><span class="line">    if x == 1:</span><br><span class="line">        return 1</span><br><span class="line">    else:</span><br><span class="line">        return x * fact(x-1)</span><br></pre></td></tr></table></figure>
-<p>此时计算fact(3)的值</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzmescj4z5j30qf0e875j.jpg" alt=""><br><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzmesrfv87j30um0m3mzm.jpg" alt=""><br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fzmet46a6cj30v70jtjte.jpg" alt=""></p>
-<p>参考资料：</p>
-<p><a href="https://www.cnblogs.com/ahalei/p/3604612.html" target="_blank" rel="noopener">https://www.cnblogs.com/ahalei/p/3604612.html</a></p>
-<p>Aditya Bhargava.算法图解[M].人民邮电出版社。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/26/TF-IDF/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/26/TF-IDF/" itemprop="url">TF-IDF</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-26T16:16:19+08:00">
-                2019-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/nlp/" itemprop="url" rel="index">
-                    <span itemprop="name">nlp</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  0
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/26/markdown语言/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/26/markdown语言/" itemprop="url">Markdown简明版使用指南</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-26T16:00:57+08:00">
-                2019-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/markdown/" itemprop="url" rel="index">
-                    <span itemprop="name">markdown</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  326
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Markdown简明版使用指南"><a href="#Markdown简明版使用指南" class="headerlink" title="Markdown简明版使用指南"></a>Markdown简明版使用指南</h1><h2 id="1-标题"><a href="#1-标题" class="headerlink" title="1.标题"></a>1.标题</h2><p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 这是一级标题</span><br><span class="line">## 这是二级标题</span><br><span class="line">### 这是三级标题</span><br></pre></td></tr></table></figure></p>
-<p>效果：</p>
-<h1 id="这是一级标题"><a href="#这是一级标题" class="headerlink" title="这是一级标题"></a>这是一级标题</h1><h2 id="这是二级标题"><a href="#这是二级标题" class="headerlink" title="这是二级标题"></a>这是二级标题</h2><h3 id="这是三级标题"><a href="#这是三级标题" class="headerlink" title="这是三级标题"></a>这是三级标题</h3><h2 id="2-列表"><a href="#2-列表" class="headerlink" title="2.列表"></a>2.列表</h2><h3 id="无序列表"><a href="#无序列表" class="headerlink" title="- 无序列表"></a>- 无序列表</h3><p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">- 列表内容</span><br><span class="line">注意：- 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure></p>
-<p>效果：</p>
-<ul>
-<li>列表内容</li>
-<li>列表内容</li>
-</ul>
-<h3 id="有序列表"><a href="#有序列表" class="headerlink" title="- 有序列表"></a>- 有序列表</h3><p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line"></span><br><span class="line">注意：序号跟内容之间要有空格</span><br></pre></td></tr></table></figure></p>
-<p>效果：</p>
-<ol>
-<li>列表内容</li>
-<li>列表内容</li>
-<li>列表内容</li>
-</ol>
-<h2 id="3-引用"><a href="#3-引用" class="headerlink" title="3.引用"></a>3.引用</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzk3aor8y9j310606gwf8.jpg" alt=""></p>
-<h2 id="4-粗体、斜体、删除线"><a href="#4-粗体、斜体、删除线" class="headerlink" title="4.粗体、斜体、删除线"></a>4.粗体、斜体、删除线</h2><p>语法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">**这是加粗的文字**</span><br><span class="line"></span><br><span class="line">*这是倾斜的文字*</span><br><span class="line"></span><br><span class="line">***这是斜体加粗的文字***</span><br><span class="line"></span><br><span class="line">~~这是加删除线的文字~~</span><br></pre></td></tr></table></figure>
-<p>效果：</p>
-<p><strong>这是加粗的文字</strong></p>
-<p><em>这是倾斜的文字</em></p>
-<p><strong><em>这是斜体加粗的文字</em></strong></p>
-<p><del>这是加删除线的文字</del></p>
-<h2 id="5-链接与图片"><a href="#5-链接与图片" class="headerlink" title="5.链接与图片"></a>5.链接与图片</h2><p>链接语法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[显示文本](链接地址) </span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
-<p>图片语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![图片alt](图片地址)</span><br></pre></td></tr></table></figure></p>
-<h2 id="6-分割线"><a href="#6-分割线" class="headerlink" title="6.分割线"></a>6.分割线</h2><p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---</span><br></pre></td></tr></table></figure></p>
-<p>效果：</p>
-<hr>
-<h2 id="7-表格"><a href="#7-表格" class="headerlink" title="7.表格"></a>7.表格</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fzk36wvp05j315q0do0ud.jpg" alt=""></p>
-<h2 id="8-代码高亮"><a href="#8-代码高亮" class="headerlink" title="8.代码高亮"></a>8.代码高亮</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzk30qsfenj314x0ibn0o.jpg" alt=""></p>
-<h2 id="9-制作待办事项To-do-List"><a href="#9-制作待办事项To-do-List" class="headerlink" title="9.制作待办事项To-do List"></a>9.制作待办事项To-do List</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzk32iyi9lj31520d2wg0.jpg" alt=""></p>
-<h2 id="10-高效绘制-流程图、序列图、甘特图、表格"><a href="#10-高效绘制-流程图、序列图、甘特图、表格" class="headerlink" title="10.高效绘制 流程图、序列图、甘特图、表格"></a>10.高效绘制 流程图、序列图、甘特图、表格</h2><p>流程图：<br><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzk338e8cgj31cg0t877d.jpg" alt=""></p>
-<p>表格：<br><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzk34slhlhj315q0do0ud.jpg" alt=""></p>
-<h2 id="11-书写数学公式"><a href="#11-书写数学公式" class="headerlink" title="11.书写数学公式"></a>11.书写数学公式</h2><p><img src="http://note.youdao.com/iyoudao/wp-content/uploads/2016/09/数学公式.png" alt=""></p>
-<p>参考资料：</p>
-<p><a href="https://www.jianshu.com/p/191d1e21f7ed" target="_blank" rel="noopener">https://www.jianshu.com/p/191d1e21f7ed</a><br><a href="http://note.youdao.com/iyoudao/?p=2411&amp;vendor=unsilent14" target="_blank" rel="noopener">http://note.youdao.com/iyoudao/?p=2411&amp;vendor=unsilent14</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2001,7 +1987,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2012,7 +1998,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -2023,7 +2009,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -2074,7 +2060,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">1.8k</span>
+    <span title="Site words total count">3.2k</span>
   
 </div>
 
