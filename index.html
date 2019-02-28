@@ -306,8 +306,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习-算法/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习 算法</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -337,7 +337,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1.2k
+                  1.8k
                 </span>
               
 
@@ -353,7 +353,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  4
+                  6
                 </span>
               
             </div>
@@ -376,7 +376,7 @@
       
         
           
-            <h2 id="1-集成学习概念"><a href="#1-集成学习概念" class="headerlink" title="1. 集成学习概念"></a>1. 集成学习概念</h2><p>集成学习就是将几种机器学习模型组合成一个模型的元算法(meta-algorithm)，以减小方差(例如：Bagging)，偏差(例如：Boosting)，或者改进预测(例如：Stacking、Blending)。</p>
+            <h2 id="一、集成学习概念"><a href="#一、集成学习概念" class="headerlink" title="一、集成学习概念"></a>一、集成学习概念</h2><p>在日常生活中我们会遇到这样的情况：对一个决策问题，如果一个人拿不定主意，可以组织多个人来集体决策。如果要判断一个病人是否患有某种疑难疾病，可以组织一批医生来会诊。会诊的做法是让每个医生做一个判断，然后收集他们的判断结果进行投票协商，得票最多的那个判断结果作为最终的结果。这种思想在机器学习领域的应用就是集成学习算法。</p>
 <p>其结构如下图所示：</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g0ld53t5fnj30kp0h875d.jpg" alt=""></p>
 <p>也就是说，我们需要解决两个问题：</p>
@@ -386,32 +386,89 @@
 <li><p>应采用什么样的结合策略</p>
 </li>
 </ul>
-<h2 id="2-个体学习器概念"><a href="#2-个体学习器概念" class="headerlink" title="2. 个体学习器概念"></a>2. 个体学习器概念</h2><p>之前讲到，集成学习的一个问题就是如何得到若干个个体学习器，那么我们两种选择。</p>
+<h2 id="二、-个体学习器概念"><a href="#二、-个体学习器概念" class="headerlink" title="二、 个体学习器概念"></a>二、 个体学习器概念</h2><ol>
+<li>之前讲到，集成学习的一个问题就是如何得到若干个个体学习器，那么我们两种选择。</li>
+</ol>
 <ul>
 <li><p>同类型（如全是决策树，或者全是神经网络）的个体学习器</p>
 </li>
 <li><p>不同类型的个体学习器。比如我们有一个分类问题，对训练集采用支持向量机个体学习器、逻辑回归个体学习器和朴素贝叶斯个体学习器来学习，再通过某种结合策略来确定最终的分类强学习器。</p>
 </li>
 </ul>
-<p>一般而言，个体学习器是所谓的弱学习器，即泛化能力略优于随机猜测的学习器。使用弱学习器进行集成学习已经可以获得足够好的泛化性能。当然也可以使用比较强的学习器。</p>
-<p>理想的个体学习器应该具有<strong>好而不同</strong>的特点，即：</p>
+<ol start="2">
+<li><p>一般而言，个体学习器就是弱学习器，即泛化能力略优于随机猜测的学习器。使用弱学习器进行集成学习已经可以获得足够好的泛化性能。当然也可以使用比较强的学习器。</p>
+</li>
+<li><p>理想的个体学习器应该具有<strong>好而不同</strong>的特点，即：</p>
+</li>
+</ol>
 <p>好：有一定的准确性</p>
 <p>不同：个体学习器之间应该具有差异</p>
-<p>目前来说，同质个体学习器的应用是最广泛的，一般我们常说的集成学习的方法都是指的同质个体学习器。而同质个体学习器使用最多的模型是CART决策树和神经网络。</p>
-<p>同质个体学习器按照个体学习器之间是否存在依赖关系可以分为两类：</p>
+<ol start="4">
+<li>同质个体学习器按照个体学习器之间是否存在依赖关系可以分为两类：</li>
+</ol>
 <ul>
 <li>个体学习器之间存在强依赖关系，一系列个体学习器基本都需要串行生成，代表算法是boosting系列算法，</li>
 <li>个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，代表算法是bagging和随机森林（Random Forest）系列算法。</li>
 </ul>
-<h2 id="3-boosting-bagging"><a href="#3-boosting-bagging" class="headerlink" title="3. boosting  bagging"></a>3. boosting  bagging</h2><p>也就是自举汇聚法(Bootstrap Aggregating)，步骤如下： 在包含N个样本的数据集中采用有放回的抽样方式随机抽取一定数量(可以为N)的样本，构成一个数据集；  按照步骤1中的方式得到M个数据集；  利用机器学习的方法(例如：SVM，决策树，神经网络……)对得到的M个数据集，训练出M个弱模型(比随机模型效果好)；  集成M个弱模型的结果作为最终结果；Bagging就是通过M个弱模型的结果，通过并行集成的方式来获得最终结果。因为M个数据集是相互独立的，因此这M个弱模型之间也是相互独立的，在最终的集成结果时，每个模型的权重是一样的。这是和下文的Boosting所不同的。Bagging集成方式 回归问题：M个模型结果的均值； 分类问题： 对M个模型的结果进行投票决定，票数多的作为结果；票数一样，随机决定；代表方法</p>
-<h2 id="4-结合策略-平均法，投票法，学习法"><a href="#4-结合策略-平均法，投票法，学习法" class="headerlink" title="4. 结合策略(平均法，投票法，学习法)"></a>4. 结合策略(平均法，投票法，学习法)</h2><h2 id="5-随机森林思想"><a href="#5-随机森林思想" class="headerlink" title="5. 随机森林思想"></a>5. 随机森林思想</h2><p>1.构建多个数据集</p>
-<p>在包括N个样本的数据集中，采用有放回的抽样方式选择N个样本，构成中间数据集，然后在这个中间数据集的所有特征中随机选择几个特征，作为最终的数据集。以上述方式构建多个数据集；一般回归问题选用全部特征，分类问题选择全部特征个数的平方根个特征</p>
-<p>2.为每个数据集建立完全分裂的决策树</p>
-<p>利用CART为每个数据集建立一个完全分裂、没有经过剪枝的决策树，最终得到多棵CART决策树；</p>
-<p>3.预测新数据</p>
-<p>根据得到的每一个决策树的结果来计算新数据的预测值。回归问题：采用多棵树的平均值。分类问题：采用投票计数的方法，票数大的获胜，相同的随机选择。可以把树的棵树设置为奇数避免这一问题。</p>
-<h2 id="6-随机森林的推广"><a href="#6-随机森林的推广" class="headerlink" title="6. 随机森林的推广"></a>6. 随机森林的推广</h2><h2 id="7-优缺点"><a href="#7-优缺点" class="headerlink" title="7. 优缺点"></a>7. 优缺点</h2><h2 id="8-sklearn参数2"><a href="#8-sklearn参数2" class="headerlink" title="8. sklearn参数2"></a>8. sklearn参数2</h2><h2 id="9-应用场景"><a href="#9-应用场景" class="headerlink" title="9.应用场景"></a>9.应用场景</h2><p>参考资料：</p>
-<p><a href="https://blog.csdn.net/qq_36330643/article/details/77621232" target="_blank" rel="noopener">https://blog.csdn.net/qq_36330643/article/details/77621232</a><br><a href="http://chrer.com/2018/07/24/集成学习常见模型/" target="_blank" rel="noopener">http://chrer.com/2018/07/24/集成学习常见模型/</a></p>
+<h2 id="三、-boosting-bagging"><a href="#三、-boosting-bagging" class="headerlink" title="三、 boosting  bagging"></a>三、 boosting  bagging</h2><h3 id="1-boostrap概述"><a href="#1-boostrap概述" class="headerlink" title="1.boostrap概述"></a>1.boostrap概述</h3><p><strong>boostrap是一种有放回抽样</strong>。例如，如果有10个样本，Bootstrap抽样从它们中随机的抽取出10个，下面两种情况都是可能发生的:</p>
+<p>1 1 1 1 1 1 1 1 1 1 </p>
+<p>1 2 3 4 5 6 7 8 9 10</p>
+<h3 id="2-Bagging（Bootstrap-Aggregating）概述"><a href="#2-Bagging（Bootstrap-Aggregating）概述" class="headerlink" title="2.Bagging（Bootstrap Aggregating）概述"></a>2.Bagging（Bootstrap Aggregating）概述</h3><blockquote>
+<p>Bagging算法对训练样本集进行多次Bootstrap抽样，每次抽样形成的数据集训练一个弱学习器模型，得到多个独立的弱学习器（对于分类问题，称为弱分类器），然后这多个弱学习器，通过简单投票，票多的结果胜出的方法，集成得到最终的强学习器。</p>
+</blockquote>
+<ul>
+<li><p>如何得到若干个个体学习器:多次boostrap抽样</p>
+</li>
+<li><p>应采用什么样的结合策略：简单投票</p>
+</li>
+</ul>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0m6i5ozhij312k0iudik.jpg" alt=""></p>
+<p>训练流程为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">循环，对i = 1, ..., T</span><br><span class="line"></span><br><span class="line">    对训练样本集进行Bootstrap抽样，得到抽样后的训练样本集</span><br><span class="line"></span><br><span class="line">    用抽样得到的样本集训练一个模型hi(x)</span><br><span class="line"></span><br><span class="line">结束循环</span><br><span class="line"></span><br><span class="line">输出模型组合h1(x),...,hT(x)</span><br></pre></td></tr></table></figure></p>
+<p>如果弱学习器是决策树，这种方法就是随机森林。</p>
+<h3 id="3-boosting概述"><a href="#3-boosting概述" class="headerlink" title="3.boosting概述"></a>3.boosting概述</h3><blockquote>
+<p>Boost的含义是增强，Boosting方法就是从弱学习算法出发，在前一个学习器的基础上反复学习，得到一系列弱分类器，然后组合弱分类器，得到一个强分类器。Boosting方法在学习过程中通过改变训练数据的<strong>权值分布</strong>，针对不同的数据分布调用弱学习算法得到一系列弱分类器。</p>
+</blockquote>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0m6gvv32dj31380ietcg.jpg" alt=""></p>
+<p>各个基学习器之间是强相关的，即下一个学习器的学习偏好受之前学习器的影响很大，因为之前的基学习器的学习情况会通过权值来影响下一次训练样本的分布情况。这种强相关性决定了AdaBoost只能进行串行运算，而且通过AdaBoost算法的推导可以知道该算法只能用于二分类任务。 </p>
+<h2 id="四、-结合策略-平均法，投票法，学习法"><a href="#四、-结合策略-平均法，投票法，学习法" class="headerlink" title="四、 结合策略(平均法，投票法，学习法)"></a>四、 结合策略(平均法，投票法，学习法)</h2><p>在上面几节里面我们主要关注于如何得到若干个个体学习器，本节来介绍结合策略。</p>
+<ol>
+<li>平均法</li>
+</ol>
+<ul>
+<li>简单平均法（simple averaging） </li>
+</ul>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0m6ql3hi8j30aa04mgln.jpg" alt=""></p>
+<ul>
+<li>加权平均法</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g0m6rr0lt1j30cu04m0ss.jpg" alt=""></p>
+<ol start="2">
+<li>投票法则有三种方法：</li>
+</ol>
+<ul>
+<li>绝对多数投票法</li>
+</ul>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0m6uaceooj30si052wez.jpg" alt=""></p>
+<ul>
+<li>相对多数投票法</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g0m6tw2dhbj30ge050jri.jpg" alt=""></p>
+<ul>
+<li>加权投票法</li>
+</ul>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0m6tju5udj30ge04u74f.jpg" alt=""></p>
+<ol start="3">
+<li>学习法</li>
+</ol>
+<p>上两节的方法都是对弱学习器的结果做平均或者投票，相对比较简单，但是可能学习误差较大，于是就有了学习法这种方法，对于学习法，代表方法是stacking，当使用stacking的结合策略时， 我们不是对弱学习器的结果做简单的逻辑处理，而是再加上一层学习器，也就是说，我们将训练集弱学习器的学习结果作为输入，将训练集的输出作为输出，重新训练一个学习器来得到最终结果。</p>
+<p>在这种情况下，我们将弱学习器称为初级学习器，将用于结合的学习器称为次级学习器。对于测试集，我们首先用初级学习器预测一次，得到次级学习器的输入样本，再用次级学习器预测一次，得到最终的预测结果。</p>
+<h2 id="五、-随机森林思想"><a href="#五、-随机森林思想" class="headerlink" title="五、 随机森林思想"></a>五、 随机森林思想</h2><p>和bagging不同，随机森林采用另一种方法来达到好而不同的效果。随机森林是在决策树的基础上进行的。</p>
+<p>过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1. 构建多个数据集</span><br><span class="line"></span><br><span class="line">在包括N个样本的数据集中，采用有放回的抽样方式选择N个样本，构成中间数据集，然后在这个中间数据集的所有特征中随机选择几个特征，作为最终的数据集。以上述方式构建多个数据集；一般回归问题选用全部特征，分类问题选择全部特征个数的平方根个特征</span><br><span class="line"></span><br><span class="line">2. 为每个数据集建立完全分裂的决策树</span><br><span class="line"></span><br><span class="line">利用CART为每个数据集建立一个完全分裂、没有经过剪枝的决策树，最终得到多棵CART决策树；</span><br><span class="line"></span><br><span class="line">3. 预测新数据</span><br><span class="line"></span><br><span class="line">根据得到的每一个决策树的结果来计算新数据的预测值。</span><br><span class="line">- 回归问题：采用多棵树的平均值。</span><br><span class="line">- 分类问题：采用投票计数的方法，票数大的获胜，相同的随机选择。可以把树的棵树设置为奇数避免这一问题。</span><br></pre></td></tr></table></figure></p>
+<h2 id="六、-随机森林的推广"><a href="#六、-随机森林的推广" class="headerlink" title="六、 随机森林的推广"></a>六、 随机森林的推广</h2><h2 id="七、-优缺点"><a href="#七、-优缺点" class="headerlink" title="七、 优缺点"></a>七、 优缺点</h2><h2 id="八、-sklearn参数2"><a href="#八、-sklearn参数2" class="headerlink" title="八、 sklearn参数2"></a>八、 sklearn参数2</h2><h2 id="九、应用场景"><a href="#九、应用场景" class="headerlink" title="九、应用场景"></a>九、应用场景</h2><p>参考资料：</p>
+<p><a href="https://blog.csdn.net/qq_36330643/article/details/77621232" target="_blank" rel="noopener">https://blog.csdn.net/qq_36330643/article/details/77621232</a></p>
+<p><a href="http://chrer.com/2018/07/24/集成学习常见模型/" target="_blank" rel="noopener">http://chrer.com/2018/07/24/集成学习常见模型/</a></p>
+<p><a href="http://www.tensorinfinity.com/upload/files/20190121/1548062905762703.pdf" target="_blank" rel="noopener">http://www.tensorinfinity.com/upload/files/20190121/1548062905762703.pdf</a></p>
+<p><a href="https://blog.csdn.net/Daycym/article/details/81909690" target="_blank" rel="noopener">https://blog.csdn.net/Daycym/article/details/81909690</a> </p>
 
           
         
@@ -2060,7 +2117,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">3.2k</span>
+    <span title="Site words total count">3.8k</span>
   
 </div>
 
