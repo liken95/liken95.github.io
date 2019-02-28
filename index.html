@@ -337,7 +337,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  3.3k
+                  3.4k
                 </span>
               
 
@@ -396,21 +396,18 @@
 </li>
 </ul>
 <ol start="2">
-<li><p>一般而言，个体学习器就是弱学习器，即泛化能力略优于随机猜测的学习器。使用弱学习器进行集成学习已经可以获得足够好的泛化性能。当然也可以使用比较强的学习器。</p>
-</li>
-<li><p>同质个体学习器按照个体学习器之间是否存在依赖关系可以分为两类：</p>
-</li>
+<li>同类型个体学习器按照个体学习器之间是否存在依赖关系可以分为两类：</li>
 </ol>
 <ul>
 <li>个体学习器之间存在强依赖关系，一系列个体学习器基本都需要串行生成，代表算法是boosting系列算法，</li>
 <li>个体学习器之间不存在强依赖关系，一系列个体学习器可以并行生成，代表算法是bagging和随机森林（Random Forest）系列算法。</li>
 </ul>
-<h2 id="三、-boosting-bagging"><a href="#三、-boosting-bagging" class="headerlink" title="三、 boosting  bagging"></a>三、 boosting  bagging</h2><h3 id="1-boostrap概述"><a href="#1-boostrap概述" class="headerlink" title="1.boostrap概述"></a>1.boostrap概述</h3><p><strong>boostrap是一种有放回抽样</strong>。</p>
+<h2 id="三、-boosting、bagging"><a href="#三、-boosting、bagging" class="headerlink" title="三、 boosting、bagging"></a>三、 boosting、bagging</h2><h3 id="1-boostrap概述"><a href="#1-boostrap概述" class="headerlink" title="1.boostrap概述"></a>1.boostrap概述</h3><p><strong>boostrap是一种有放回抽样</strong>。</p>
 <p>例如，如果有10个样本，Bootstrap抽样从它们中随机的抽取出10个，下面两种情况都是可能发生的:</p>
 <p>1 1 1 1 1 1 1 1 1 1 </p>
 <p>1 2 3 4 5 6 7 8 9 10</p>
 <h3 id="2-Bagging（Bootstrap-Aggregating）概述"><a href="#2-Bagging（Bootstrap-Aggregating）概述" class="headerlink" title="2.Bagging（Bootstrap Aggregating）概述"></a>2.Bagging（Bootstrap Aggregating）概述</h3><blockquote>
-<p>Bagging算法对训练样本集进行多次Bootstrap抽样，每次抽样形成的数据集训练一个弱学习器模型，得到多个独立的弱学习器（对于分类问题，称为弱分类器）。结合策略也比较简单，对于分类问题，通常使用简单投票法，得到最多票数的类别或者类别之一为最终的模型输出。对于回归问题，通常使用简单平均法，对T个弱学习器得到的回归结果进行算术平均得到最终的模型输出。</p>
+<p>Bagging算法对训练样本集进行<strong>多次Bootstrap抽样</strong>，每次抽样形成的数据集训练一个弱学习器模型，得到多个独立的弱学习器（对于分类问题，称为弱分类器）。结合策略也比较简单，对于分类问题，通常使用简单投票法，得到最多票数的类别或者类别之一为最终的模型输出。对于回归问题，通常使用简单平均法，对T个弱学习器得到的回归结果进行算术平均得到最终的模型输出。</p>
 </blockquote>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0m6i5ozhij312k0iudik.jpg" alt=""></p>
 <p>训练流程为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">循环，对i = 1, ..., T</span><br><span class="line"></span><br><span class="line">    对训练样本集进行Bootstrap抽样，得到抽样后的训练样本集</span><br><span class="line"></span><br><span class="line">    用抽样得到的样本集训练一个模型hi(x)</span><br><span class="line"></span><br><span class="line">结束循环</span><br><span class="line"></span><br><span class="line">输出模型组合h1(x),...,hT(x)</span><br></pre></td></tr></table></figure></p>
@@ -419,7 +416,7 @@
 <p>Boost的含义是增强，Boosting方法就是从弱学习算法出发，在前一个学习器的基础上反复学习，得到一系列弱分类器，然后组合弱分类器，得到一个强分类器。Boosting方法在学习过程中通过改变训练数据的<strong>权值分布</strong>，针对不同的数据分布调用弱学习算法得到一系列弱分类器。</p>
 </blockquote>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0m6gvv32dj31380ietcg.jpg" alt=""></p>
-<p>各个基学习器之间是强相关的，即下一个学习器的学习偏好受之前学习器的影响很大，因为之前的基学习器的学习情况会通过权值来影响下一次训练样本的分布情况。这种强相关性决定了AdaBoost只能进行串行运算，而且通过AdaBoost算法的推导可以知道该算法只能用于二分类任务。 </p>
+<p>各个体学习器之间是强相关的，即下一个学习器的学习偏好受之前学习器的影响很大，因为之前的个体学习器的学习情况会通过权值来影响下一次训练样本的分布情况。这种强相关性决定了AdaBoost只能进行串行运算，而且通过AdaBoost算法的推导可以知道该算法只能用于二分类任务。 </p>
 <h2 id="四、-结合策略-平均法，投票法，学习法"><a href="#四、-结合策略-平均法，投票法，学习法" class="headerlink" title="四、 结合策略(平均法，投票法，学习法)"></a>四、 结合策略(平均法，投票法，学习法)</h2><p>在上面几节里面我们主要关注于如何得到若干个个体学习器，本节来介绍结合策略。</p>
 <ol>
 <li>平均法</li>
@@ -436,30 +433,35 @@
 <li>投票法则有三种方法：</li>
 </ol>
 <ul>
-<li>绝对多数投票法</li>
-</ul>
-<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0m6uaceooj30si052wez.jpg" alt=""></p>
-<ul>
 <li>相对多数投票法</li>
 </ul>
+<p>即少数服从多数</p>
 <p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g0m6tw2dhbj30ge050jri.jpg" alt=""></p>
+<ul>
+<li>绝对多数投票法</li>
+</ul>
+<p>在相对多数投票法的基础上，不光要求获得最高票，还要求票过半数。否则会拒绝预测。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0m6uaceooj30si052wez.jpg" alt=""></p>
 <ul>
 <li>加权投票法</li>
 </ul>
+<p>每个弱学习器的分类票数要乘以一个权重，最终将各个类别的加权票数求和，最大的值对应的类别为最终类别。</p>
 <p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0m6tju5udj30ge04u74f.jpg" alt=""></p>
-<ol start="3">
+<ol>
 <li>学习法</li>
 </ol>
 <p>上两节的方法都是对弱学习器的结果做平均或者投票，相对比较简单，但是可能学习误差较大，于是就有了学习法这种方法，对于学习法，代表方法是stacking，当使用stacking的结合策略时， 我们不是对弱学习器的结果做简单的逻辑处理，而是再加上一层学习器，也就是说，我们将训练集弱学习器的学习结果作为输入，将训练集的输出作为输出，重新训练一个学习器来得到最终结果。</p>
 <p>在这种情况下，我们将弱学习器称为初级学习器，将用于结合的学习器称为次级学习器。对于测试集，我们首先用初级学习器预测一次，得到次级学习器的输入样本，再用次级学习器预测一次，得到最终的预测结果。</p>
 <h2 id="五、-随机森林思想"><a href="#五、-随机森林思想" class="headerlink" title="五、 随机森林思想"></a>五、 随机森林思想</h2><p>随机森林是bagging算法的进化版，改进的部分在于：</p>
 <ul>
-<li>rf使用了cart决策树作为弱学习器</li>
-<li>对于普通的决策树，我们会在节点上所有的n个样本特征中选择一个最优的特征来做决策树的左右子树划分，但是RF通过随机选择节点上的一部分样本特征，这个数字小于n，假设为nsub，然后在这些随机选择的nsub个样本特征中，选择一个最优的特征来做决策树的左右子树划分。这样进一步增强了模型的泛化能力。如果nsub=n，则此时RF的CART决策树和普通的CART决策树没有区别。nsub越小，则模型约健壮，当然此时对于训练集的拟合程度会变差。也就是说nsub越小，模型的方差会减小，但是偏倚会增大。在实际案例中，一般会通过交叉验证调参获取一个合适的nsub的值。</li>
+<li><p>rf使用了cart决策树作为弱学习器</p>
+</li>
+<li><p>对于普通的决策树，我们会在节点上所有的n个样本特征中选择一个最优的特征来做决策树的左右子树划分，但是RF通过随机选择节点上的一部分样本特征，这个数字小于n，假设为nsub，然后在这些随机选择的nsub个样本特征中，选择一个最优的特征来做决策树的左右子树划分。这样进一步增强了模型的泛化能力。如果nsub=n，则此时RF的CART决策树和普通的CART决策树没有区别。nsub越小，则模型约健壮，当然此时对于训练集的拟合程度会变差。也就是说nsub越小，模型的方差会减小，但是偏倚会增大。在实际案例中，一般会通过交叉验证调参获取一个合适的nsub的值。</p>
+</li>
 </ul>
 <p>过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1. 构建多个数据集</span><br><span class="line"></span><br><span class="line">在包括N个样本的数据集中，采用有放回的抽样方式选择N个样本，构成中间数据集，然后在这个中间数据集的所有特征中随机选择几个特征，作为最终的数据集。以上述方式构建多个数据集；一般回归问题选用全部特征，分类问题选择全部特征个数的平方根个特征</span><br><span class="line"></span><br><span class="line">2. 为每个数据集建立完全分裂的决策树</span><br><span class="line"></span><br><span class="line">利用CART为每个数据集建立一个完全分裂、没有经过剪枝的决策树，最终得到多棵CART决策树；</span><br><span class="line"></span><br><span class="line">3. 预测新数据</span><br><span class="line"></span><br><span class="line">根据得到的每一个决策树的结果来计算新数据的预测值。</span><br><span class="line">- 回归问题：采用多棵树的平均值。</span><br><span class="line">- 分类问题：采用投票计数的方法，票数大的获胜，相同的随机选择。可以把树的棵树设置为奇数避免这一问题。</span><br></pre></td></tr></table></figure></p>
 <h2 id="六、-随机森林的推广"><a href="#六、-随机森林的推广" class="headerlink" title="六、 随机森林的推广"></a>六、 随机森林的推广</h2><p>由于RF在实际应用中的良好特性，基于RF，有很多变种算法，应用也很广泛，不光可以用于分类回归，还可以用于特征转换，异常点检测等。下面对于这些RF家族的算法中有代表性的做一个总结。</p>
-<h3 id="4-1-extra-trees"><a href="#4-1-extra-trees" class="headerlink" title="4.1 extra trees"></a>4.1 extra trees</h3><p>　　extra trees是RF的一个变种, 原理几乎和RF一模一样，仅有区别有：</p>
+<h3 id="4-1-extra-trees"><a href="#4-1-extra-trees" class="headerlink" title="4.1 extra trees"></a>4.1 extra trees</h3><p>extra trees是RF的一个变种, 原理几乎和RF一模一样，有区别有：</p>
 <ol>
 <li><p>对于每个决策树的训练集，RF采用的是随机采样bootstrap来选择采样集作为每个决策树的训练集，而extra trees一般不采用随机采样，即每个决策树采用原始训练集。</p>
 </li>
@@ -480,7 +482,9 @@
 <p>c(m)的表达式为：</p>
 <p>c(m)=2ln(m−1)+ξ−2m−1m,ξ为欧拉常数</p>
 <p>s(x,m)的取值范围是[0,1],取值越接近于1，则是异常点的概率也越大。</p>
-<h2 id="七、-优缺点"><a href="#七、-优缺点" class="headerlink" title="七、 优缺点"></a>七、 优缺点</h2><p>1.RF的主要优点有：</p>
+<h2 id="七、-优缺点"><a href="#七、-优缺点" class="headerlink" title="七、 优缺点"></a>七、 优缺点</h2><ol>
+<li>RF的主要优点有：</li>
+</ol>
 <ul>
 <li><p>训练可以高度并行化，对于大数据时代的大样本训练速度有优势。个人觉得这是的最主要的优点。</p>
 </li>
@@ -495,7 +499,7 @@
 <li><p>对部分特征缺失不敏感。</p>
 </li>
 </ul>
-<ol>
+<ol start="2">
 <li>RF的主要缺点有：</li>
 </ol>
 <ul>
@@ -504,7 +508,10 @@
 <li><p>取值划分比较多的特征容易对RF的决策产生更大的影响，从而影响拟合的模型的效果。</p>
 </li>
 </ul>
-<h2 id="八、-sklearn参数2"><a href="#八、-sklearn参数2" class="headerlink" title="八、 sklearn参数2"></a>八、 sklearn参数2</h2><h2 id="九、应用场景"><a href="#九、应用场景" class="headerlink" title="九、应用场景"></a>九、应用场景</h2><p>参考资料：</p>
+<h2 id="八、-sklearn参数2"><a href="#八、-sklearn参数2" class="headerlink" title="八、 sklearn参数2"></a>八、 sklearn参数2</h2><p>待补充</p>
+<h2 id="九、应用场景"><a href="#九、应用场景" class="headerlink" title="九、应用场景"></a>九、应用场景</h2><p>数据维度相对低（几十维），同时对准确性有较高要求时。</p>
+<p>因为不需要很多参数调整就可以达到不错的效果，基本上不知道用什么方法的时候都可以先试一下随机森林。</p>
+<p>参考资料：</p>
 <p><a href="http://www.cnblogs.com/pinard/p/6131423.html" target="_blank" rel="noopener">http://www.cnblogs.com/pinard/p/6131423.html</a></p>
 <p><a href="https://blog.csdn.net/qq_36330643/article/details/77621232" target="_blank" rel="noopener">https://blog.csdn.net/qq_36330643/article/details/77621232</a></p>
 <p><a href="http://chrer.com/2018/07/24/集成学习常见模型/" target="_blank" rel="noopener">http://chrer.com/2018/07/24/集成学习常见模型/</a></p>
