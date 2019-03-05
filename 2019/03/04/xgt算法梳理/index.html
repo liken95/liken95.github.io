@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习 算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、CART树决策树时机器学习中古老的算法，可以看做是一组嵌套的判定规则，这组规则通过训练得到。从数学上看，决策树是一个分段常数函数，每个叶子节点对应空间中的一片区域，落入此区域的向量x被预测为该叶子节点的值。 分类与回归树是二叉决策树的一种，既可以用于分类问题，也可以用于回归问题。训练时要解决的核心问题是寻找最佳分裂来确定内部节点，递归构建树，为叶子节点赋予标签值。对于分类问题，寻找最佳分裂时的">
+<meta name="keywords" content="机器学习 算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xgb算法梳理">
+<meta property="og:url" content="http://yoursite.com/2019/03/04/xgt算法梳理/index.html">
+<meta property="og:site_name" content="thinks&#39;s blog">
+<meta property="og:description" content="一、CART树决策树时机器学习中古老的算法，可以看做是一组嵌套的判定规则，这组规则通过训练得到。从数学上看，决策树是一个分段常数函数，每个叶子节点对应空间中的一片区域，落入此区域的向量x被预测为该叶子节点的值。 分类与回归树是二叉决策树的一种，既可以用于分类问题，也可以用于回归问题。训练时要解决的核心问题是寻找最佳分裂来确定内部节点，递归构建树，为叶子节点赋予标签值。对于分类问题，寻找最佳分裂时的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g0qutawi0uj30ec04aq31.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1g0qutkt538j30pq03adg6.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g0quu5g5nqj30qe04kwet.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g0quufr1atj30j4048q33.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g0quuvuvbdj30fe02ydfw.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g0quvaczloj30b0036dfu.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g0quy0ahkvj30qi04kt91.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyff3axj30u003it94.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyqzf0wj30ik05egls.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g0quz11e12j30ia05maa8.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/005tJ8mQly1g0qylmcbqpj30cs0dc0y4.jpg">
+<meta property="og:updated_time" content="2019-03-05T13:25:34.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xgb算法梳理">
+<meta name="twitter:description" content="一、CART树决策树时机器学习中古老的算法，可以看做是一组嵌套的判定规则，这组规则通过训练得到。从数学上看，决策树是一个分段常数函数，每个叶子节点对应空间中的一片区域，落入此区域的向量x被预测为该叶子节点的值。 分类与回归树是二叉决策树的一种，既可以用于分类问题，也可以用于回归问题。训练时要解决的核心问题是寻找最佳分裂来确定内部节点，递归构建树，为叶子节点赋予标签值。对于分类问题，寻找最佳分裂时的">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1g0qutawi0uj30ec04aq31.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/04/xgt算法梳理/">
+
+
+
+
+
+  <title>xgb算法梳理 | thinks's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/liken95"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">thinks's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/xgt算法梳理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thinks">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thinks's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">xgb算法梳理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-04T16:32:18+08:00">
+                2019-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习-算法/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习 算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  3.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、CART树"><a href="#一、CART树" class="headerlink" title="一、CART树"></a>一、CART树</h2><p>决策树时机器学习中古老的算法，可以看做是一组嵌套的判定规则，这组规则通过训练得到。从数学上看，决策树是一个分段常数函数，每个叶子节点对应空间中的一片区域，落入此区域的向量x被预测为该叶子节点的值。</p>
+<p>分类与回归树是二叉决策树的一种，既可以用于分类问题，也可以用于回归问题。训练时要解决的核心问题是寻找最佳分裂来确定内部节点，递归构建树，为叶子节点赋予标签值。对于分类问题，寻找最佳分裂时的目标是最大化Gini纯度值，简化后的计算公式为</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g0qutawi0uj30ec04aq31.jpg" alt=""></p>
+<p>其中NL是分裂之后左子节点的训练样本数，NL,i是左子节点中第i类样本数；NR是分裂之后右子节点的训练样本数，NR,i是右子节点中第i类样本数。对于回归问题，寻找最佳分裂时优化的目标是最大化回归误差的下降值</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g0qutkt538j30pq03adg6.jpg" alt=""></p>
+<p>因为特征向量中有多个特征，因此实现时需要为每个特征分量计算最佳分裂阈值，然后取其中最优的。为单个特征计算最佳分裂阈值时，首先将该节点的所有训练样本按照该特征分量从小到大排序，然后依次以每个特征值作为阈值，将样本集分为左右两个子集，然后计算上面的分裂指标，取其最优值。具体原理在《机器学习与应用》一书中已经详细讲述。</p>
+<p>第二个问题是叶子节点值的设定。对于分类问题，将叶子节点的值设置成本节点的训练样本集中出现概率最大的那个类；对于回归树，则设置为本节点训练样本标签值的均值。 </p>
+<h2 id="二、算法原理"><a href="#二、算法原理" class="headerlink" title="二、算法原理"></a>二、算法原理</h2><h2 id="三、损失函数"><a href="#三、损失函数" class="headerlink" title="三、损失函数"></a>三、损失函数</h2><p>XGBoost的损失函数定义为</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quu5g5nqj30qe04kwet.jpg" alt=""></p>
+<p>其中n为训练样本数，l是对单个样本的损失，yi’为预测值,yi为样本真实标签值，Φ为模型的参数。正则化项定义了模型的复杂程度</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quufr1atj30j4048q33.jpg" alt=""></p>
+<p>其中γ和λ为人工设置的系数，w为决策树所有叶子节点值形成的向量，T为叶子节点数。正则化项由叶子节点数，叶子节点值向量的模平方两项构成，第一项体现了决策树结构的复杂程度，第二项体现了决策树预测值的复杂程度。定义q为输入向量X到决策树叶子节点编号的映射，即根据输入向量确定用决策树的第几个叶子节点值来预测它的输出值</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g0quuvuvbdj30fe02ydfw.jpg" alt=""></p>
+<p>其中d为特征向量的维数。因此q定义了树的结构，w定义了树的输出值。决策树的映射函数可以写成</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g0quvaczloj30b0036dfu.jpg" alt=""></p>
+<p>与梯度提升算法相同，采用加法模型表示强学习器。假设yi,t’为第i个样本在第t次迭代时的强学习器预测值，训练时依次确定每一个弱学习器函数ft，加到强学习器预测函数中，即最小化如下目标函数</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g0quy0ahkvj30qi04kt91.jpg" alt=""></p>
+<p>实现时用贪婪法将ft加入到模型中，以最小化目标函数值。注意，在这里yi是常数，yi,t-1’+f(xi）是损失函数的自变量，而yi,t-1’也是常数。对于一般的损失函数无法求得上面优化问题的公式解。采用牛顿法近似求解，对目标函数在yi,t-1’点处作二阶泰勒展开后得到</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyff3axj30u003it94.jpg" alt=""></p>
+<p>损失函数的一阶导数为</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyqzf0wj30ik05egls.jpg" alt=""></p>
+<p>与梯度提升算法相同，是将之前已经训练得到的强学习器对样本的预测值当做变量求导，这一点一定要理解，很多读者困惑的地方在于不知道这个导数是对谁求导。损失函数的二阶导数为</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quz11e12j30ia05maa8.jpg" alt=""></p>
+<p>去掉与ft(xi）无关的常数项，可以得到化简后的损失函数为</p>
+<p>如果定义集合即预测值为第j个叶子节点的训练样本集合（样本下标集合）。由于每个训练样本只属于某一个叶子节点，目标函数可以拆分成对所有叶子节点损失函数的和</p>
+<p>首先介绍叶子节点的值如何确定。如果决策树的结构即q(x)确定，根据牛顿法可以得到第j个叶子节点的最优值为</p>
+<p>这是单个叶子节点的损失函数对wj求导并令导数为0后解方程的结果。前面已经假定对单个样本的损失函数是凸函数，因此必定是极小值。单个叶子节点的损失函数对wj的一阶导数为</p>
+<p>令其为0，即可得到上面的结果。</p>
+<p>接下来说明如何确定决策树的结构，即寻找最佳分裂。将wj的最优解代入损失函数，得到只含有q的损失函数</p>
+<p>此函数可以看做是对决策树结构优劣的一个度量，要求其极小值，类似于决策树寻找分裂时的不纯度指标。假设节点在分裂之前的训练样本集为I，分裂之后左子节点的训练样本集为IL，右子节点的训练样本集为IR。分裂之后的叶子节点数增加1，因此上面目标函数的第二项由γT变为γ(T+1)，二者的差值为γ。将上面的目标函数取反，求Lt (q)的极小值等价于求-Lt (q)的极大值。寻找最佳分裂的目标是使得损失函数的下降值最大化</p>
+<p>γ是常数，因此上式最右边的-γ可以忽略。除了使用不同的分裂指标，其他过程与标准的决策树训练算法相同。在实现时将上面公式中的求和项定义为几个变量，分别是所有训练样本的一阶导数，二阶导数之和</p>
+<p>左右子集样本的一阶导数，二阶导数之和</p>
+<h2 id="四、分裂结点算法"><a href="#四、分裂结点算法" class="headerlink" title="四、分裂结点算法"></a>四、分裂结点算法</h2><h2 id="五、正则化"><a href="#五、正则化" class="headerlink" title="五、正则化"></a>五、正则化</h2><h2 id="六、对缺失值处理"><a href="#六、对缺失值处理" class="headerlink" title="六、对缺失值处理"></a>六、对缺失值处理</h2><p>xgboost处理缺失值的方法和其他树模型不同。xgboost把缺失值当做稀疏矩阵来对待，本身的在节点分裂时不考虑的缺失值的数值。缺失值数据会被分到左子树和右子树分别计层损失，选择较优的那一个。如果训练中没有数据缺失，预测时出现了数据缺失，那么默认被分类到右子树。</p>
+<p><img src="http://ww1.sinaimg.cn/large/005tJ8mQly1g0qylmcbqpj30cs0dc0y4.jpg" alt=""></p>
+<p>这样的处理方法固然巧妙，但也有风险：假设了训练数据和预测数据的分布相同，比如缺失值的分布也相同，不过直觉上应该影响不是很大。</p>
+<h2 id="七、优缺点"><a href="#七、优缺点" class="headerlink" title="七、优缺点"></a>七、优缺点</h2><p>与GBDT相比，xgBoosting有以下进步：</p>
+<p>1）GBDT以传统CART作为基分类器，而xgBoosting支持线性分类器，相当于引入L1和L2正则化项的逻辑回归（分类问题）和线性回归（回归问题）；</p>
+<p>2）GBDT在优化时只用到一阶导数，xgBoosting对代价函数做了二阶Talor展开，引入了一阶导数和二阶导数；</p>
+<p>3）当样本存在缺失值是，xgBoosting能自动学习分裂方向；</p>
+<p>4）xgBoosting借鉴RF的做法，支持列抽样，这样不仅能防止过拟合，还能降低计算；</p>
+<p>5）xgBoosting的代价函数引入正则化项，控制了模型的复杂度，正则化项包含全部叶子节点的个数，每个叶子节点输出的score的L2模的平方和。从贝叶斯方差角度考虑，正则项降低了模型的方差，防止模型过拟合；</p>
+<p>6）xgBoosting在每次迭代之后，为叶子结点分配学习速率，降低每棵树的权重，减少每棵树的影响，为后面提供更好的学习空间；</p>
+<p>7）xgBoosting工具支持并行,但并不是tree粒度上的，而是特征粒度，决策树最耗时的步骤是对特征的值排序，xgBoosting在迭代之前，先进行预排序，存为block结构，每次迭代，重复使用该结构，降低了模型的计算；block结构也为模型提供了并行可能，在进行结点的分裂时，计算每个特征的增益，选增益最大的特征进行下一步分裂，那么各个特征的增益可以开多线程进行；<br>8）可并行的近似直方图算法，树结点在进行分裂时，需要计算每个节点的增益，若数据量较大，对所有节点的特征进行排序，遍历的得到最优分割点，这种贪心法异常耗时，这时引进近似直方图算法，用于生成高效的分割点，即用分裂后的某种值减去分裂前的某种值，获得增益，为了限制树的增长，引入阈值，当增益大于阈值时，进行分裂；</p>
+<p>然而，与LightGBM相比，又表现出了明显的不足：</p>
+<p>1）xgBoosting采用预排序，在迭代之前，对结点的特征做预排序，遍历选择最优分割点，数据量大时，贪心法耗时，LightGBM方法采用histogram算法，占用的内存低，数据分割的复杂度更低；</p>
+<p>2）xgBoosting采用level-wise生成决策树，同时分裂同一层的叶子，从而进行多线程优化，不容易过拟合，但很多叶子节点的分裂增益较低，没必要进行跟进一步的分裂，这就带来了不必要的开销；LightGBM采用深度优化，leaf-wise生长策略，每次从当前叶子中选择增益最大的结点进行分裂，循环迭代，但会生长出更深的决策树，产生过拟合，因此引入了一个阈值进行限制，防止过拟合.</p>
+<h2 id="八、应用场景"><a href="#八、应用场景" class="headerlink" title="八、应用场景"></a>八、应用场景</h2><p>跟决策树一样，多应用于分类问题</p>
+<p>行业应用、业务优化</p>
+<h2 id="九、sklearn参数"><a href="#九、sklearn参数" class="headerlink" title="九、sklearn参数"></a>九、sklearn参数</h2><p>General Parameters（常规参数） </p>
+<p>1.booster [default=gbtree]：选择基分类器，gbtree: tree-based models/gblinear: linear models </p>
+<p>2.silent [default=0]:设置成1则没有运行信息输出，最好是设置为0. </p>
+<p>3.nthread [default to maximum number of threads available if not set]：线程数</p>
+<p>Booster Parameters（模型参数） </p>
+<p>1.eta [default=0.3]:shrinkage参数，用于更新叶子节点权重时，乘以该系数，避免步长过大。参数值越大，越可能无法收敛。把学习率 eta 设置的小一些，小学习率可以使得后面的学习更加仔细。 </p>
+<p>2.min_child_weight [default=1]:这个参数默认是 1，是每个叶子里面 h 的和至少是多少，对正负样本不均衡时的 0-1 分类而言，假设 h 在 0.01 附近，min_child_weight 为 1 意味着叶子节点中最少需要包含 100 个样本。这个参数非常影响结果，控制叶子节点中二阶导的和的最小值，该参数值越小，越容易 overfitting。 </p>
+<p>3.max_depth [default=6]: 每颗树的最大深度，树高越深，越容易过拟合。 </p>
+<p>4.max_leaf_nodes:最大叶结点数，与max_depth作用有点重合。 </p>
+<p>5.gamma [default=0]：后剪枝时，用于控制是否后剪枝的参数。 </p>
+<p>6.max_delta_step [default=0]：这个参数在更新步骤中起作用，如果取0表示没有约束，如果取正值则使得更新步骤更加保守。可以防止做太大的更新步子，使更新更加平缓。 </p>
+<p>7.subsample [default=1]：样本随机采样，较低的值使得算法更加保守，防止过拟合，但是太小的值也会造成欠拟合。 </p>
+<p>8.colsample_bytree [default=1]：列采样，对每棵树的生成用的特征进行列采样.一般设置为： 0.5-1 </p>
+<p>9.lambda [default=1]：控制模型复杂度的权重值的L2正则化项参数，参数越大，模型越不容易过拟合。 </p>
+<p>10.alpha [default=0]:控制模型复杂程度的权重值的 L1 正则项参数，参数值越大，模型越不容易过拟合。 </p>
+<p>11.scale_pos_weight [default=1]：如果取值大于0的话，在类别样本不平衡的情况下有助于快速收敛。</p>
+<p>Learning Task Parameters（学习任务参数） </p>
+<p>1.objective [default=reg:linear]：定义最小化损失函数类型，常用参数： </p>
+<p>binary:logistic –logistic regression for binary classification, returns predicted probability (not class) </p>
+<p>multi:softmax –multiclass classification using the softmax objective, returns predicted class (not probabilities) </p>
+<p>you also need to set an additional num_class (number of classes) parameter defining the number of unique classes </p>
+<p>multi:softprob –same as softmax, but returns predicted probability of each data point belonging to each class. </p>
+<p>2.eval_metric [ default according to objective ]：<br>The metric to be used for validation data.<br>The default values are rmse for regression and error for classification. </p>
+<p>Typical values are: </p>
+<p>rmse – root mean square error<br>mae – mean absolute error<br>logloss – negative log-likelihood<br>error – Binary classification error rate (0.5 threshold)<br>merror – Multiclass classification error rate<br>mlogloss – Multiclass logloss<br>auc: Area under the curve </p>
+<p>3.seed [default=0]： </p>
+<p>The random number seed. 随机种子，用于产生可复现的结果<br>Can be used for generating reproducible results and also for parameter tuning.</p>
+<p>注意: python sklearn style参数名会有所变化<br>eta –&gt; learning_rate<br>lambda –&gt; reg_lambda </p>
+<h2 id="alpha-–-gt-reg-alpha"><a href="#alpha-–-gt-reg-alpha" class="headerlink" title="alpha –&gt; reg_alpha"></a>alpha –&gt; reg_alpha</h2><p>作者：我曾经被山河大海跨过 </p>
+<p>来源：CSDN </p>
+<p>原文：<a href="https://blog.csdn.net/sb19931201/article/details/52557382" target="_blank" rel="noopener">https://blog.csdn.net/sb19931201/article/details/52557382</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+    
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习-算法/" rel="tag"># 机器学习 算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/02/GBDT算法梳理/" rel="next" title="GBDT算法梳理">
+                <i class="fa fa-chevron-left"></i> GBDT算法梳理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">thinks</p>
+              <p class="site-description motion-element" itemprop="description">start from zero</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、CART树"><span class="nav-number">1.</span> <span class="nav-text">一、CART树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、算法原理"><span class="nav-number">2.</span> <span class="nav-text">二、算法原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、损失函数"><span class="nav-number">3.</span> <span class="nav-text">三、损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、分裂结点算法"><span class="nav-number">4.</span> <span class="nav-text">四、分裂结点算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、正则化"><span class="nav-number">5.</span> <span class="nav-text">五、正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、对缺失值处理"><span class="nav-number">6.</span> <span class="nav-text">六、对缺失值处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、优缺点"><span class="nav-number">7.</span> <span class="nav-text">七、优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、应用场景"><span class="nav-number">8.</span> <span class="nav-text">八、应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九、sklearn参数"><span class="nav-number">9.</span> <span class="nav-text">九、sklearn参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alpha-–-gt-reg-alpha"><span class="nav-number">10.</span> <span class="nav-text">alpha –&gt; reg_alpha</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">thinks</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">13.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
