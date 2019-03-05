@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyqzf0wj30ik05egls.jpg">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1g0quz11e12j30ia05maa8.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/005tJ8mQly1g0qylmcbqpj30cs0dc0y4.jpg">
-<meta property="og:updated_time" content="2019-03-05T13:25:34.051Z">
+<meta property="og:updated_time" content="2019-03-05T13:45:54.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="xgb算法梳理">
 <meta name="twitter:description" content="一、CART树决策树时机器学习中古老的算法，可以看做是一组嵌套的判定规则，这组规则通过训练得到。从数学上看，决策树是一个分段常数函数，每个叶子节点对应空间中的一片区域，落入此区域的向量x被预测为该叶子节点的值。 分类与回归树是二叉决策树的一种，既可以用于分类问题，也可以用于回归问题。训练时要解决的核心问题是寻找最佳分裂来确定内部节点，递归构建树，为叶子节点赋予标签值。对于分类问题，寻找最佳分裂时的">
@@ -348,7 +348,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  3.4k
+                  3.2k
                 </span>
               
 
@@ -364,7 +364,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  12
+                  11
                 </span>
               
             </div>
@@ -392,7 +392,16 @@
 <p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g0qutkt538j30pq03adg6.jpg" alt=""></p>
 <p>因为特征向量中有多个特征，因此实现时需要为每个特征分量计算最佳分裂阈值，然后取其中最优的。为单个特征计算最佳分裂阈值时，首先将该节点的所有训练样本按照该特征分量从小到大排序，然后依次以每个特征值作为阈值，将样本集分为左右两个子集，然后计算上面的分裂指标，取其最优值。具体原理在《机器学习与应用》一书中已经详细讲述。</p>
 <p>第二个问题是叶子节点值的设定。对于分类问题，将叶子节点的值设置成本节点的训练样本集中出现概率最大的那个类；对于回归树，则设置为本节点训练样本标签值的均值。 </p>
-<h2 id="二、算法原理"><a href="#二、算法原理" class="headerlink" title="二、算法原理"></a>二、算法原理</h2><h2 id="三、损失函数"><a href="#三、损失函数" class="headerlink" title="三、损失函数"></a>三、损失函数</h2><p>XGBoost的损失函数定义为</p>
+<h2 id="二、算法原理"><a href="#二、算法原理" class="headerlink" title="二、算法原理"></a>二、算法原理</h2><ol>
+<li><p>初始化 f_0(x) </p>
+</li>
+<li><p>for m=1 to M :</p>
+</li>
+</ol>
+<p>(a) 计算损失函数在每个训练样本点的一阶导数和二阶导数 </p>
+<p>(b) 递归地运用树分裂算法生成一颗决策树</p>
+<p>(c) 把新生成的决策树添加到模型中</p>
+<h2 id="三、损失函数"><a href="#三、损失函数" class="headerlink" title="三、损失函数"></a>三、损失函数</h2><p>XGBoost的损失函数定义为</p>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quu5g5nqj30qe04kwet.jpg" alt=""></p>
 <p>其中n为训练样本数，l是对单个样本的损失，yi’为预测值,yi为样本真实标签值，Φ为模型的参数。正则化项定义了模型的复杂程度</p>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quufr1atj30j4048q33.jpg" alt=""></p>
@@ -408,16 +417,11 @@
 <p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g0quyqzf0wj30ik05egls.jpg" alt=""></p>
 <p>与梯度提升算法相同，是将之前已经训练得到的强学习器对样本的预测值当做变量求导，这一点一定要理解，很多读者困惑的地方在于不知道这个导数是对谁求导。损失函数的二阶导数为</p>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g0quz11e12j30ia05maa8.jpg" alt=""></p>
-<p>去掉与ft(xi）无关的常数项，可以得到化简后的损失函数为</p>
-<p>如果定义集合即预测值为第j个叶子节点的训练样本集合（样本下标集合）。由于每个训练样本只属于某一个叶子节点，目标函数可以拆分成对所有叶子节点损失函数的和</p>
-<p>首先介绍叶子节点的值如何确定。如果决策树的结构即q(x)确定，根据牛顿法可以得到第j个叶子节点的最优值为</p>
-<p>这是单个叶子节点的损失函数对wj求导并令导数为0后解方程的结果。前面已经假定对单个样本的损失函数是凸函数，因此必定是极小值。单个叶子节点的损失函数对wj的一阶导数为</p>
-<p>令其为0，即可得到上面的结果。</p>
-<p>接下来说明如何确定决策树的结构，即寻找最佳分裂。将wj的最优解代入损失函数，得到只含有q的损失函数</p>
-<p>此函数可以看做是对决策树结构优劣的一个度量，要求其极小值，类似于决策树寻找分裂时的不纯度指标。假设节点在分裂之前的训练样本集为I，分裂之后左子节点的训练样本集为IL，右子节点的训练样本集为IR。分裂之后的叶子节点数增加1，因此上面目标函数的第二项由γT变为γ(T+1)，二者的差值为γ。将上面的目标函数取反，求Lt (q)的极小值等价于求-Lt (q)的极大值。寻找最佳分裂的目标是使得损失函数的下降值最大化</p>
-<p>γ是常数，因此上式最右边的-γ可以忽略。除了使用不同的分裂指标，其他过程与标准的决策树训练算法相同。在实现时将上面公式中的求和项定义为几个变量，分别是所有训练样本的一阶导数，二阶导数之和</p>
-<p>左右子集样本的一阶导数，二阶导数之和</p>
-<h2 id="四、分裂结点算法"><a href="#四、分裂结点算法" class="headerlink" title="四、分裂结点算法"></a>四、分裂结点算法</h2><h2 id="五、正则化"><a href="#五、正则化" class="headerlink" title="五、正则化"></a>五、正则化</h2><h2 id="六、对缺失值处理"><a href="#六、对缺失值处理" class="headerlink" title="六、对缺失值处理"></a>六、对缺失值处理</h2><p>xgboost处理缺失值的方法和其他树模型不同。xgboost把缺失值当做稀疏矩阵来对待，本身的在节点分裂时不考虑的缺失值的数值。缺失值数据会被分到左子树和右子树分别计层损失，选择较优的那一个。如果训练中没有数据缺失，预测时出现了数据缺失，那么默认被分类到右子树。</p>
+<h2 id="四、分裂结点算法"><a href="#四、分裂结点算法" class="headerlink" title="四、分裂结点算法"></a>四、分裂结点算法</h2><p>1、暴力枚举</p>
+<p>2、近似方法 ，近似方法通过特征的分布，按照百分比确定一组候选分裂点，通过遍历所有的候选分裂点来找到最佳分裂点。<br>两种策略：全局策略和局部策略。在全局策略中，对每一个特征确定一个全局的候选分裂点集合，就不再改变；而在局部策略中，每一次分裂 都要重选一次分裂点。前者需要较大的分裂集合，后者可以小一点。对比补充候选集策略与分裂点数目对模型的影响。 全局策略需要更细的分裂点才能和局部策略差不多</p>
+<p>3、Weighted Quantile Sketch</p>
+<h2 id="五、正则化"><a href="#五、正则化" class="headerlink" title="五、正则化"></a>五、正则化</h2><p>1）像Adaboost和GBDT中一样，对每一个模型乘以一个系数λ（0 &lt; λ ≤ 1），用来降低每个模型对结果的贡献<br>2）采用特征子采样方法，和RandomForest中的特征子采样一样，可以降低模型的方差</p>
+<h2 id="六、对缺失值处理"><a href="#六、对缺失值处理" class="headerlink" title="六、对缺失值处理"></a>六、对缺失值处理</h2><p>xgboost处理缺失值的方法和其他树模型不同。xgboost把缺失值当做稀疏矩阵来对待，本身的在节点分裂时不考虑的缺失值的数值。缺失值数据会被分到左子树和右子树分别计层损失，选择较优的那一个。如果训练中没有数据缺失，预测时出现了数据缺失，那么默认被分类到右子树。</p>
 <p><img src="http://ww1.sinaimg.cn/large/005tJ8mQly1g0qylmcbqpj30cs0dc0y4.jpg" alt=""></p>
 <p>这样的处理方法固然巧妙，但也有风险：假设了训练数据和预测数据的分布相同，比如缺失值的分布也相同，不过直觉上应该影响不是很大。</p>
 <h2 id="七、优缺点"><a href="#七、优缺点" class="headerlink" title="七、优缺点"></a>七、优缺点</h2><p>与GBDT相比，xgBoosting有以下进步：</p>
@@ -678,7 +682,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">13.6k</span>
+    <span title="Site words total count">13.4k</span>
   
 </div>
 
