@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1. two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use">
+<meta name="description" content="1. 001 two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not">
 <meta name="keywords" content="leetcode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组求和问题">
 <meta property="og:url" content="http://yoursite.com/2019/03/31/数组求和/index.html">
 <meta property="og:site_name" content="thinks&#39;s blog">
-<meta property="og:description" content="1. two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use">
+<meta property="og:description" content="1. 001 two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-31T12:07:59.566Z">
+<meta property="og:updated_time" content="2019-03-31T12:34:31.558Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组求和问题">
-<meta name="twitter:description" content="1. two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use">
+<meta name="twitter:description" content="1. 001 two sumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not">
 
 
 
@@ -336,7 +336,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  244
+                  580
                 </span>
               
 
@@ -352,7 +352,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  2
                 </span>
               
             </div>
@@ -373,15 +373,21 @@
       
 
       
-        <h2 id="1-two-sum"><a href="#1-two-sum" class="headerlink" title="1. two sum"></a>1. two sum</h2><p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p>
+        <h2 id="1-001-two-sum"><a href="#1-001-two-sum" class="headerlink" title="1. 001 two sum"></a>1. 001 two sum</h2><p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p>
 <p>You may assume that each input would have exactly one solution, and you may not use the same element twice.</p>
 <p>Example:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [2, 7, 11, 15], target = 9,</span><br><span class="line"></span><br><span class="line">Because nums[0] + nums[1] = 2 + 7 = 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
 <p>solution:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def twoSum(self, nums, target):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :type target: int</span><br><span class="line">        :rtype: List[int]≥</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        dic = dict&#123;&#125;</span><br><span class="line">        for i in range(len(nums)):</span><br><span class="line">            j = target - num[i]</span><br><span class="line">            if j in nums:</span><br><span class="line">                return [i,target-num[i]]</span><br><span class="line">            else:</span><br><span class="line">                return</span><br></pre></td></tr></table></figure>
-<h2 id="2-three-sum"><a href="#2-three-sum" class="headerlink" title="2. three sum"></a>2. three sum</h2><p>给定一个包含n个整数的数组nums,判断nums中是否存在三个元素a,b,c，使得a+b+c=0？找出所有满足条件且不重复的三元组。</p>
+<h2 id="2-015-three-sum"><a href="#2-015-three-sum" class="headerlink" title="2. 015 three sum"></a>2. 015 three sum</h2><p>给定一个包含n个整数的数组nums,判断nums中是否存在三个元素a,b,c，使得a+b+c=0？找出所有满足条件且不重复的三元组。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">例如，给定数组nums = [-1,0,1,2,-1,-4]，满足要求的三元组集合为</span><br><span class="line">[</span><br><span class="line">    [-1,0,1],</span><br><span class="line">    [-1,-1,2]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>solution:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def twoSum(self, nums, target):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :type target: int</span><br><span class="line">        :rtype: List[int]≥</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        dic = dict&#123;&#125;</span><br><span class="line">        for i in range(len(nums)):</span><br><span class="line">            j = target - num[i]</span><br><span class="line">            if j in nums:</span><br><span class="line">                return [i,target-num[i]]</span><br><span class="line">            else:</span><br><span class="line">                return</span><br></pre></td></tr></table></figure></p>
+<p>思路：</p>
+<p>3Sum其实可以转化成一个2Sum的题，我们先从数组中选一个数，并将目标数减去这个数，得到一个新目标数。然后再在剩下的数中找一对和是这个新目标数的数，其实就转化为2Sum了。为了避免得到重复结果，我们不仅要跳过重复元素，而且要保证2Sum找的范围要是在我们最先选定的那个数之后的。</p>
+<p>solution:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">nums.sort()</span><br><span class="line">res = set()</span><br><span class="line"></span><br><span class="line">for i, v_i in enumerate(nums[:-2]): # 新</span><br><span class="line"></span><br><span class="line">    if i &gt;= 1 and v_i == nums[i - 1]:</span><br><span class="line">        continue</span><br><span class="line"></span><br><span class="line">    seen_set = set()# 新</span><br><span class="line">    for num in nums[i + 1:]:</span><br><span class="line"></span><br><span class="line">        search = 0 - (v_i + num)</span><br><span class="line">        if search in seen_set:</span><br><span class="line">            res.add((v_i, search, num))</span><br><span class="line">        else:</span><br><span class="line">            seen_set.add(num)</span><br><span class="line"></span><br><span class="line">return list(res)</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-018-四数之和"><a href="#3-018-四数之和" class="headerlink" title="3. 018 四数之和"></a>3. 018 四数之和</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定一个包含 n个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素a，b，c 和d ，使得 a+b+c+d 的值与 target 相等？找出所有满足条件且不重复的四元组。</span><br></pre></td></tr></table></figure>
+<p>example：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。</span><br><span class="line"></span><br><span class="line">满足要求的四元组集合为：</span><br><span class="line">[</span><br><span class="line">[-1, 0, 0, 1],</span><br><span class="line">[-2, -1, 1, 2],</span><br><span class="line">[-2, 0, 0, 2]</span><br></pre></td></tr></table></figure>
+<p>solution:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">nums.sort()</span><br><span class="line">len_nums = len(nums)</span><br><span class="line">res = set()</span><br><span class="line"></span><br><span class="line"># 外层由遍历一轮变成遍历两轮</span><br><span class="line">for i in range(len_nums - 3): # 新</span><br><span class="line"></span><br><span class="line">    if i &gt;= 1 and nums[i] == nums[i-1]:</span><br><span class="line">        continue</span><br><span class="line"></span><br><span class="line">    for j in range(i+1, len_nums - 2):</span><br><span class="line"></span><br><span class="line">        if j &gt;= i + 2 and nums[j] == nums[j-1]:</span><br><span class="line">            continue</span><br><span class="line"></span><br><span class="line">        seen_set = set()</span><br><span class="line"></span><br><span class="line">        # 一样的双数的HashSet</span><br><span class="line">        for v_k in nums[j+1:]:</span><br><span class="line">            search = target - nums[i] - nums[j] - v_k</span><br><span class="line"></span><br><span class="line">            if search in seen_set:</span><br><span class="line">                res.add((nums[i], nums[j], search, v_k))</span><br><span class="line">            else:</span><br><span class="line">                seen_set.add(v_k)</span><br><span class="line"></span><br><span class="line">return list(res)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -422,8 +428,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/31/数之和/" rel="next" title="数组求和问题">
-                <i class="fa fa-chevron-left"></i> 数组求和问题
+              <a href="/2019/03/27/正则表达式-1/" rel="next" title="正则表达式">
+                <i class="fa fa-chevron-left"></i> 正则表达式
               </a>
             
           </div>
@@ -507,7 +513,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -562,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-two-sum"><span class="nav-number">1.</span> <span class="nav-text">1. two sum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-three-sum"><span class="nav-number">2.</span> <span class="nav-text">2. three sum</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-001-two-sum"><span class="nav-number">1.</span> <span class="nav-text">1. 001 two sum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-015-three-sum"><span class="nav-number">2.</span> <span class="nav-text">2. 015 three sum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-018-四数之和"><span class="nav-number">3.</span> <span class="nav-text">3. 018 四数之和</span></a></li></ol></div>
             
 
           </div>
@@ -596,7 +602,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">14.3k</span>
+    <span title="Site words total count">14.1k</span>
   
 </div>
 
