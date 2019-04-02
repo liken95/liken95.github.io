@@ -252,6 +252,213 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/第三天/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="thinks">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="thinks's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/02/第三天/" itemprop="url">第三天</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-02T21:46:25+08:00">
+                2019-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  382
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。<br>注意空字符串可被认为是有效字符串。</p>
+<p>题目分析：</p>
+<p>字符串中总共有3对需要匹配的字符’()’’{}’’[]’，思路是我们将读到的左部分（ ‘({[‘ ）字符存起来，当读到右部分字符（ ‘)}]’ ）时，进行匹配。</p>
+<p>这里使用栈存储的原因是字符是就近匹配的，也就是读到一个右字符需要跟最近的左字符进行匹配。</p>
+<p>假设题目是跟第一个字符匹配，那么就需要使用队列。</p>
+<p>边界情况：</p>
+<p>读到右字符时栈为空，应返回False<br>最后栈中还有左字符，应返回False</p>
+<p>代码思路：</p>
+<ol>
+<li>创建dict, 左部分字符为key，右部分字符为value</li>
+<li>遍历字符串。<br>当前字符是key：字符就入栈<br>当前字符不是key：如果栈空返回False，因为没有左部分可进行匹配了或者左右字符不匹配，返回False</li>
+<li>如果遍历完字符串，栈中还有字符，就是还有左部分的字符没有也无法再进行匹配</li>
+</ol>
+<p>代码实现：</p>
+<p>def isValid(self, s):</p>
+<pre><code># 步骤1
+parentheses = {k: v for k, v in zip(&apos;([{&apos;, &apos;)]}&apos;)}
+stack = []
+
+# 步骤2
+for char in s:
+    if char in parentheses:
+        stack.append(char)
+    else:
+        if not stack or parentheses[stack.pop()] != char:
+            return False
+
+# 步骤3
+return not stack
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+    
+    <div>
+  
+</div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/数组求和（二）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2071,204 +2278,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/26/k-means/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/26/k-means/" itemprop="url">k-means</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-26T09:42:23+08:00">
-                2019-02-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据挖掘-算法/" itemprop="url" rel="index">
-                    <span itemprop="name">数据挖掘 算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  256
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一、相异度计算"><a href="#一、相异度计算" class="headerlink" title="一、相异度计算"></a>一、相异度计算</h2><blockquote>
-<p>相异度即两个东西差别有多大。</p>
-</blockquote>
-<p>人的直观感受下，人与羊的相异度明显大于人与猩猩的相异度。但是如何把这种感受传递给计算机，我们必须对使用数学语言描述出相异度。</p>
-<h3 id="1-标量下的相异度计算"><a href="#1-标量下的相异度计算" class="headerlink" title="1.标量下的相异度计算"></a>1.标量下的相异度计算</h3><blockquote>
-<p>标量即无方向意义的数字。</p>
-</blockquote>
-<p>设x=(1,2,3),y=(4,5,6)</p>
-<ul>
-<li><p>欧式距离</p>
-</li>
-<li><p>曼哈顿距离</p>
-</li>
-<li><p>闵可夫斯基距离</p>
-</li>
-<li><p>皮尔逊系数(Pearson Correlation Coefficient)</p>
-</li>
-</ul>
-<p>归一化问题</p>
-<p>以上计算存在一个问题：取值范围大的属性对距离的影响高于取值范围小的属性。为了解决这个问题，一般要进行归一化。</p>
-<p>归一化就是将各个属性值按比例映射到相同的取值区间，这样是为了平衡各个属性对距离的影响。通常将各个属性均映射到[0,1]区间，映射公式为：</p>
-<p><a href="https://www.kancloud.cn/wizardforcel/dm-algo-top10/116021" target="_blank" rel="noopener">https://www.kancloud.cn/wizardforcel/dm-algo-top10/116021</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2319,7 +2328,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2392,7 +2401,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">14.5k</span>
+    <span title="Site words total count">14.9k</span>
   
 </div>
 
