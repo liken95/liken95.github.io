@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/如何在Markdown上编辑数学公式/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/二分法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="thinks">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/25/如何在Markdown上编辑数学公式/" itemprop="url">如何在Markdown上编辑数学公式</a></h1>
+                <a class="post-title-link" href="/2019/01/25/二分法/" itemprop="url">二分法</a></h1>
         
 
         <div class="post-meta">
@@ -306,8 +306,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/markdown/" itemprop="url" rel="index">
-                    <span itemprop="name">markdown</span>
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -337,7 +337,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  53
+                  282
                 </span>
               
 
@@ -376,19 +376,20 @@
       
         
           
-            <p>推荐一个在线的<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">LaTex数学公式编辑器的网址</a></p>
-<ol>
-<li>打开这个网站:</li>
-</ol>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzj0f3hpluj31nc0laq6n.jpg" alt="网站图片"></p>
-<ol start="2">
-<li><p>输入公式 </p>
-<p> log_2 10</p>
+            <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p>一个问题：假设要在字典中查找一个单词，该字典有240000个单词，该如何以最快的速度找到这个单词？</p>
+<ul>
+<li><p>简单查找</p>
+<p>如果这个词刚好是字典中的最后一个，那么需要240000步。</p>
 </li>
-<li><p>copy这个公式，在公式前后加上 $ 即可（不需要空格）</p>
-<p> 例如：$log_2 10$</p>
+<li><p>二分查找</p>
+<p>用二分查找，每次可以排除一半的单词，直到最后只剩下一个单词。<br><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzizng902gj318o0hctgx.jpg" alt="算法图解"></p>
 </li>
-</ol>
+</ul>
+<p>一般而言，对于包含n个元素的列表，用二分查找只需要$log_2 n$步，而简单查找最多需要n步。</p>
+<h2 id="算法实现（python"><a href="#算法实现（python" class="headerlink" title="算法实现（python)"></a>算法实现（python)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def binary_search(list,item):</span><br><span class="line">    low = 0</span><br><span class="line">    high = len(list) - 1</span><br><span class="line">    <span class="comment">#只要范围没有缩小到只有一个数字</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high: </span><br><span class="line">        <span class="comment">#就检查中间的数字</span></span><br><span class="line">        mid = (low + high)/2 </span><br><span class="line">        guess = list[mid]</span><br><span class="line">        <span class="keyword">if</span> guess == item:</span><br><span class="line">            <span class="built_in">return</span> mid</span><br><span class="line">        <span class="keyword">elif</span> guess &gt; item:</span><br><span class="line">            high = mid -1</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            low = mid + 1</span><br><span class="line">    <span class="built_in">return</span> None</span><br><span class="line">    my_list = [1,3,5,7,9]</span><br><span class="line"></span><br><span class="line">list = [1,2,3,4,5,6,7,8]</span><br><span class="line"></span><br><span class="line"><span class="comment">#能找到对应的值</span></span><br><span class="line"><span class="built_in">print</span>(binary_search(list,3))</span><br><span class="line"><span class="built_in">print</span>(binary_search(list,6))</span><br><span class="line"></span><br><span class="line"><span class="comment">#不能找到对应的值</span></span><br><span class="line"><span class="built_in">print</span>(binary_search(list,8))</span><br></pre></td></tr></table></figure>
+<p>注意：仅当列表是有序时，二分查找才有用。</p>
+<p>参考资料：</p>
+<p>Aditya Bhargava.算法图解[M].人民邮电出版社。</p>
 
           
         
@@ -489,7 +490,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -500,7 +501,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
