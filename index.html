@@ -910,6 +910,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/sql/" itemprop="url" rel="index">
+                    <span itemprop="name">sql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -931,7 +953,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  0
+                  1k
                 </span>
               
 
@@ -947,7 +969,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  4
                 </span>
               
             </div>
@@ -970,7 +992,85 @@
       
         
           
-            
+            <h2 id="打开sql"><a href="#打开sql" class="headerlink" title="打开sql"></a>打开sql</h2><p>打开terminal,输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure></p>
+<h2 id="一、CREATE-TABLE"><a href="#一、CREATE-TABLE" class="headerlink" title="一、CREATE TABLE"></a>一、CREATE TABLE</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &quot;表格名”</span><br><span class="line">(&quot;栏位1&quot; &quot;栏位1 资料种类&quot;,</span><br><span class="line">&quot;栏位2&quot; &quot;栏位2 资料种类&quot;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE Customer</span><br><span class="line">(First_Name char(50),</span><br><span class="line">Last_Name char(50),</span><br><span class="line">Address char(50),</span><br><span class="line">City char(50),</span><br><span class="line">Country char(25),</span><br><span class="line">Birth_Date datetime);</span><br></pre></td></tr></table></figure>
+<h2 id="二、INSERT-INTO"><a href="#二、INSERT-INTO" class="headerlink" title="二、INSERT INTO"></a>二、INSERT INTO</h2><p>往数据库里加内容</p>
+<h3 id="1-一一对应即可。"><a href="#1-一一对应即可。" class="headerlink" title="1. 一一对应即可。"></a>1. 一一对应即可。</h3><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="- 语法"></a>- 语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO &quot;表格名&quot; </span><br><span class="line">(&quot;栏位1&quot;, &quot;栏位2&quot;, ...)</span><br><span class="line">VALUES (&quot;值1&quot;, &quot;值2&quot;, ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="example-1"><a href="#example-1" class="headerlink" title="- example"></a>- example</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO Store_Information </span><br><span class="line">(Store_Name, </span><br><span class="line">Sales, </span><br><span class="line">Txn_Date</span><br><span class="line">)</span><br><span class="line">VALUES (&apos;Los Angeles&apos;, 900, &apos;Jan-10-1999&apos;);</span><br></pre></td></tr></table></figure>
+<h3 id="2-SELECT-INSERT"><a href="#2-SELECT-INSERT" class="headerlink" title="2. SELECT + INSERT"></a>2. SELECT + INSERT</h3><h3 id="example-2"><a href="#example-2" class="headerlink" title="- example"></a>- example</h3><p>从CUStNew的表中读取数据并插入到Customers的表中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO Customers(</span><br><span class="line">    cust_id,</span><br><span class="line">    cust_contact,</span><br><span class="line">    cust_name</span><br><span class="line">);</span><br><span class="line">SELECT cust_id,cust_contact,cust_name</span><br><span class="line">FROM CUstNew</span><br></pre></td></tr></table></figure></p>
+<h2 id="三、SELECT"><a href="#三、SELECT" class="headerlink" title="三、SELECT"></a>三、SELECT</h2><p>从数据库里取内容</p>
+<h3 id="1-基本查询"><a href="#1-基本查询" class="headerlink" title="1. 基本查询"></a>1. 基本查询</h3><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1zxlvvxcvj30d007udgs.jpg" alt=""></p>
+<ul>
+<li><p>检索所有列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM Store_Information;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检索单个列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT Store_Name FROM Store_Information;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检索多个列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT Store_Name,Sales FROM Store_Information;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-SELECT-DISTINCT"><a href="#2-SELECT-DISTINCT" class="headerlink" title="2. SELECT DISTINCT"></a>2. SELECT DISTINCT</h3><ul>
+<li>语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT &quot;栏位名&quot; </span><br><span class="line">FROM &quot;表格名&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-SELECT-WHERE"><a href="#3-SELECT-WHERE" class="headerlink" title="3.SELECT WHERE"></a>3.SELECT WHERE</h3><p>抓出营业额超过 $1,000 的资料</p>
+<ul>
+<li>语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT Store_Name </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Sales &gt; 1000;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-SELECT-AND-OR"><a href="#4-SELECT-AND-OR" class="headerlink" title="4.SELECT AND OR"></a>4.SELECT AND OR</h3><p>在 Store_Information表格中选出所有 Sales 高于 $1,000 或是 Sales 在 $500 及 $275 之间的资料</p>
+<ul>
+<li>语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT Store_Name </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Sales &gt; 1000 </span><br><span class="line">OR (Sales &lt; 500 AND Sales &gt; 275);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="5-SELECT-IN（不连续）"><a href="#5-SELECT-IN（不连续）" class="headerlink" title="5.SELECT IN（不连续）"></a>5.SELECT IN（不连续）</h3><p>要在以下的 Store_Information 表格中找出所有含盖 Los Angeles 或 San Diego 的资料<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Store_Name IN (&apos;Los Angeles&apos;, &apos;San Diego&apos;);;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-SELECT-BETWEEN（连续）"><a href="#5-SELECT-BETWEEN（连续）" class="headerlink" title="5.SELECT BETWEEN（连续）"></a>5.SELECT BETWEEN（连续）</h3><p>由 Store_Information 表格中找出所有介于 January 6, 1999 及 January 10, 1999 中的资料<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Txn_Date BETWEEN &apos;Jan-06-1999&apos; AND &apos;Jan-10-1999&apos;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="6-SELECT-LIKE"><a href="#6-SELECT-LIKE" class="headerlink" title="6.SELECT LIKE"></a>6.SELECT LIKE</h3><ul>
+<li>‘A_Z’: 所有以 ‘A’ 起头，另一个任何值的字原，且以 ‘Z’ 为结尾的字串。 ‘ABZ’ 和 ‘A2Z’ 都符合这一个模式，而 ‘AKKZ’ 并不符合 (因为在 A 和 Z 之间有两个字原，而不是一个字原)。</li>
+<li>‘ABC%’: 所有以 ‘ABC’ 起头的字串。</li>
+<li>‘%XYZ’: 所有以 ‘XYZ’ 结尾的字串。</li>
+<li>‘%AN%’: 所有含有 ‘AN’ 这个套式的字串。举例来说， ‘LOS ANGELES’ 和 ‘SAN FRANCISCO’ 都符合这个套式。</li>
+</ul>
+<p>语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Store_Name LIKE &apos;%AN%&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Store_Name	Sales	Txn_Date</span><br><span class="line">LOS ANGELES	1500	Jan-05-1999</span><br><span class="line">SAN FRANCISCO	300	Jan-08-1999</span><br><span class="line">SAN DIEGO	250	Jan-07-1999</span><br></pre></td></tr></table></figure></p>
+<h3 id="7-SELECT-LIMIT"><a href="#7-SELECT-LIMIT" class="headerlink" title="7.SELECT LIMIT"></a>7.SELECT LIMIT</h3><p>对结果集从0号记录开始，最多取3条。注意SQL记录集的索引从0开始。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT id, name, gender, score</span><br><span class="line">FROM students</span><br><span class="line">ORDER BY score DESC</span><br><span class="line">LIMIT 3 OFFSET 0;</span><br></pre></td></tr></table></figure></p>
+<h3 id="8-SELECT-ORDER"><a href="#8-SELECT-ORDER" class="headerlink" title="8. SELECT ORDER"></a>8. SELECT ORDER</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 默认分数从低到高</span><br><span class="line">SELECT id, name, gender, score FROM students ORDER BY score;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#分数从高到低</span><br><span class="line">SELECT id, name, gender, score </span><br><span class="line">FROM students </span><br><span class="line">ORDER BY score DESC;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#如果score列有相同的数据，要进一步排序，可以继续添加列名。例如，使用ORDER BY score DESC, gender表示先按score列倒序，如果有相同分数的，再按gender列排序：</span><br><span class="line">SELECT id, name, gender, score </span><br><span class="line">FROM students </span><br><span class="line">ORDER BY score DESC, gender;</span><br></pre></td></tr></table></figure>
+<h3 id="9-函数"><a href="#9-函数" class="headerlink" title="9.函数"></a>9.函数</h3><ul>
+<li>AVG (平均)</li>
+<li>COUNT (计数)</li>
+<li>MAX (最大值)</li>
+<li>MIN (最小值)</li>
+<li>SUM (总合)</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#求出 Sales 栏位的总和</span><br><span class="line">SELECT SUM(Sales) </span><br><span class="line">FROM Store_Information;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="10-SELECT-COUNT"><a href="#10-SELECT-COUNT" class="headerlink" title="10.SELECT COUNT"></a>10.SELECT COUNT</h3><p>要找出我们的示范表格中有几笔 store_name 栏不是空白的资料时<br><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1zxlvvxcvj30d007udgs.jpg" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT COUNT (Store_Name) </span><br><span class="line">FROM Store_Information </span><br><span class="line">WHERE Store_Name IS NOT NULL;</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COUNT (Store_Name)</span><br><span class="line">4</span><br></pre></td></tr></table></figure></p>
+<h2 id="四、ALTER-TABLE-————修改栏位"><a href="#四、ALTER-TABLE-————修改栏位" class="headerlink" title="四、ALTER TABLE ————修改栏位"></a>四、ALTER TABLE ————修改栏位</h2><ol>
+<li>加一个栏位: ADD “栏位 1” “栏位 1 资料种类”</li>
+<li>删去一个栏位: DROP “栏位 1”</li>
+<li>改变栏位名称: CHANGE “原本栏位名” “新栏位名” “新栏位名资料种类”</li>
+<li>改变栏位的资料种类: MODIFY “栏位 1” “新资料种类”</li>
+</ol>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE &quot;table_name&quot;</span><br><span class="line">[改变方式];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>example</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#把 &quot;Address&quot; 栏位改名为 &quot;Addr&quot;。</span><br><span class="line">ALTER TABLE Customer CHANGE Address Addr char(50);</span><br><span class="line"></span><br><span class="line">#加入一个叫做 &quot;Gender&quot; 的栏位。</span><br><span class="line">ALTER TABLE Customer ADD Gender char(1);</span><br><span class="line"></span><br><span class="line">#将 &quot;Addr&quot; 栏位的资料种类改为 char(30)。</span><br><span class="line">ALTER TABLE Customer MODIFY Addr char(30);</span><br><span class="line"></span><br><span class="line">#删除 &quot;Gender&quot; 栏位。</span><br><span class="line"></span><br><span class="line">ALTER TABLE Customer DROP Gender;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="五、UPDATE-————修改表格内资料"><a href="#五、UPDATE-————修改表格内资料" class="headerlink" title="五、UPDATE ————修改表格内资料"></a>五、UPDATE ————修改表格内资料</h2><h3 id="语法-2"><a href="#语法-2" class="headerlink" title="- 语法"></a>- 语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE &quot;表格名&quot;</span><br><span class="line">SET &quot;栏位1&quot; = [新值]</span><br><span class="line">WHERE &quot;条件&quot;;</span><br></pre></td></tr></table></figure>
+<h3 id="example-3"><a href="#example-3" class="headerlink" title="- example"></a>- example</h3><p>Los Angeles 在 08-Jan-1999 的营业额实际上是 $500，而不是表格中所储存的 $300，因此我们用以下的 SQL 来修改那一笔资料：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1g1zxlvvxcvj30d007udgs.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UPDATE Store_Information</span><br><span class="line">SET &quot;Sales&quot; = 500</span><br><span class="line">WHERE Store_name = &quot;Los Angeles&quot;</span><br><span class="line">AND Txn_Date = &quot;08-Jan-1999&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="六、DELETE-FROM"><a href="#六、DELETE-FROM" class="headerlink" title="六、DELETE FROM"></a>六、DELETE FROM</h2><h3 id="语法-3"><a href="#语法-3" class="headerlink" title="- 语法"></a>- 语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM &quot;表格名&quot;</span><br><span class="line">WHERE &quot;条件&quot;;</span><br></pre></td></tr></table></figure>
+<h3 id="example-4"><a href="#example-4" class="headerlink" title="- example"></a>- example</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM Store_Information</span><br><span class="line">WHERE Store_Name = &apos;Los Angeles&apos;;</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1990,7 +2090,7 @@ return not stack
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2001,7 +2101,7 @@ return not stack
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -2012,7 +2112,7 @@ return not stack
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -2063,7 +2163,7 @@ return not stack
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">15.4k</span>
+    <span title="Site words total count">16.1k</span>
   
 </div>
 

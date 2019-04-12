@@ -252,193 +252,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/26/选择排序/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/26/选择排序/" itemprop="url">选择排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-26T15:40:07+08:00">
-                2019-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  560
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一、算法描述"><a href="#一、算法描述" class="headerlink" title="一、算法描述"></a>一、算法描述</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>比如在一个长度为N的无序数组中，在第一趟遍历N个数据，找出其中最小的数值与第一个元素交换，第二趟遍历剩下的N-1个数据，找出其中最小的数值与第二个元素交换……第N-1趟遍历剩下的2个数据，找出其中最小的数值与第N-1个元素交换，至此选择排序完成。</p>
-<h3 id="2-下面以数列-20-40-30-10-60-50-为例，演示它的选择排序过程-如下图-。"><a href="#2-下面以数列-20-40-30-10-60-50-为例，演示它的选择排序过程-如下图-。" class="headerlink" title="2.下面以数列{20,40,30,10,60,50}为例，演示它的选择排序过程(如下图)。"></a>2.下面以数列{20,40,30,10,60,50}为例，演示它的选择排序过程(如下图)。</h3><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzk1l7bnx6j30sx0r2dio.jpg" alt="选择排序算法图解"></p>
-<h2 id="二、算法实现-python"><a href="#二、算法实现-python" class="headerlink" title="二、算法实现(python)"></a>二、算法实现(python)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.方案一：第一次查找，找出数组中的最小元素，交换至数组第一个位置，第二次查找数组中除了第一个元素，剩下的部分，找出最小元素交换至数组第二个位置，以此类推。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def selectionSort(arr):</span><br><span class="line">    for i in range(0,len(arr)):</span><br><span class="line">        min = i</span><br><span class="line">        for j in range(i+1,len(arr)):</span><br><span class="line">            if arr[j]&lt;arr[min]:</span><br><span class="line">                min = j</span><br><span class="line">        arr[i],arr[min] = arr[min],arr[i]</span><br><span class="line">    return arr;</span><br><span class="line">print(selectionSort([20,40,30,10,60,5])</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.方案二：第一次查找Array1，找出最小元素，取出来放到一个一开始为空的数组Array2中，并将Array1中的那个最小元素删除，Array1长度减1。第二次查找Array1，找出最小元素，取出来放到一个数组Array2中，并将Array1中的那个最小元素删除。。。。最后Array1长度为0，Array2就是排序后的数组。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def findSmallest(arr):</span><br><span class="line">    #存储最小的值</span><br><span class="line">    smallest = arr[0]</span><br><span class="line">    #存储最小值的索引</span><br><span class="line">    smallest_index = 0</span><br><span class="line">    for i in range(1,len(arr)):</span><br><span class="line">        if arr[i] &lt; smallest:</span><br><span class="line">            smallest = arr[i]</span><br><span class="line">            smallest_index = i</span><br><span class="line">    return smallest_index</span><br><span class="line"></span><br><span class="line">def selectionSort(arr):</span><br><span class="line">    newArr = []</span><br><span class="line">    for i in range(len(arr)):</span><br><span class="line">        smallest_index = findSmallest(arr)</span><br><span class="line">        #取出数组中最小的元素并将其加入到新的数组中</span><br><span class="line">        newArr.append(arr.pop(smallest_index))</span><br><span class="line">    return newArr</span><br><span class="line"></span><br><span class="line">print(selectionSort([45,26,34,2,888,54,23,45,76,2]))</span><br></pre></td></tr></table></figure>
-<h2 id="三、算法分析"><a href="#三、算法分析" class="headerlink" title="三、算法分析"></a>三、算法分析</h2><p>平均时间复杂度：O(n2)</p>
-<p>空间复杂度：O(1)  (用于交换和记录索引)</p>
-<p>稳定性：不稳定 （比如序列【5， 5， 3】第一趟就将第一个[5]与[3]交换，导致第一个5挪动到第二个5后面）</p>
-<p>参考资料：</p>
-<p>Aditya Bhargava.算法图解[M].人民邮电出版社。<br><a href="http://www.cnblogs.com/skywang12345/p/3597641.html" target="_blank" rel="noopener">http://www.cnblogs.com/skywang12345/p/3597641.html</a><br><a href="https://www.jianshu.com/p/db334f902377" target="_blank" rel="noopener">https://www.jianshu.com/p/db334f902377</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/如何在Markdown上编辑数学公式/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -615,196 +428,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/二分法/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="thinks">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="thinks's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/25/二分法/" itemprop="url">二分法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-25T17:21:18+08:00">
-                2019-01-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  282
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p>一个问题：假设要在字典中查找一个单词，该字典有240000个单词，该如何以最快的速度找到这个单词？</p>
-<ul>
-<li><p>简单查找</p>
-<p>如果这个词刚好是字典中的最后一个，那么需要240000步。</p>
-</li>
-<li><p>二分查找</p>
-<p>用二分查找，每次可以排除一半的单词，直到最后只剩下一个单词。<br><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzizng902gj318o0hctgx.jpg" alt="算法图解"></p>
-</li>
-</ul>
-<p>一般而言，对于包含n个元素的列表，用二分查找只需要$log_2 n$步，而简单查找最多需要n步。</p>
-<h2 id="算法实现（python"><a href="#算法实现（python" class="headerlink" title="算法实现（python)"></a>算法实现（python)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def binary_search(list,item):</span><br><span class="line">    low = 0</span><br><span class="line">    high = len(list) - 1</span><br><span class="line">    <span class="comment">#只要范围没有缩小到只有一个数字</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high: </span><br><span class="line">        <span class="comment">#就检查中间的数字</span></span><br><span class="line">        mid = (low + high)/2 </span><br><span class="line">        guess = list[mid]</span><br><span class="line">        <span class="keyword">if</span> guess == item:</span><br><span class="line">            <span class="built_in">return</span> mid</span><br><span class="line">        <span class="keyword">elif</span> guess &gt; item:</span><br><span class="line">            high = mid -1</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            low = mid + 1</span><br><span class="line">    <span class="built_in">return</span> None</span><br><span class="line">    my_list = [1,3,5,7,9]</span><br><span class="line"></span><br><span class="line">list = [1,2,3,4,5,6,7,8]</span><br><span class="line"></span><br><span class="line"><span class="comment">#能找到对应的值</span></span><br><span class="line"><span class="built_in">print</span>(binary_search(list,3))</span><br><span class="line"><span class="built_in">print</span>(binary_search(list,6))</span><br><span class="line"></span><br><span class="line"><span class="comment">#不能找到对应的值</span></span><br><span class="line"><span class="built_in">print</span>(binary_search(list,8))</span><br></pre></td></tr></table></figure>
-<p>注意：仅当列表是有序时，二分查找才有用。</p>
-<p>参考资料：</p>
-<p>Aditya Bhargava.算法图解[M].人民邮电出版社。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    
-    <div>
-  
-</div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -855,7 +478,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -866,7 +489,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -877,7 +500,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -928,7 +551,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">15.4k</span>
+    <span title="Site words total count">16.1k</span>
   
 </div>
 
